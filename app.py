@@ -11,8 +11,8 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from auth.auth_bp import auth
-app.register_blueprint(auth)
+#from auth.auth_bp import auth
+#app.register_blueprint(auth)
 
 from models import User
 login_manager = LoginManager()
