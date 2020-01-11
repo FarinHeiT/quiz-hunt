@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 class Config(object):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///C:\\Users\\18122\\PycharmProjects\\Quiz-Hunt\\Maindb.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///\\Quiz-Hunt\\Maindb.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
