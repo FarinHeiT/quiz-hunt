@@ -3,7 +3,7 @@ from flask import render_template
 
 @app.route('/')
 def index():
-    return 'works'
+    return render_template('main.html')
 
 if __name__ == '__main__':
     app.run()
