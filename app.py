@@ -1,14 +1,24 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
-class Config(object):
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///Maindb.db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+from auth.auth_bp import auth
+app.register_blueprint(auth)
+
+from models import User
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
