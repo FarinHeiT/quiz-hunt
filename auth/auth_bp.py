@@ -19,12 +19,13 @@ def login():
         if User.query.filter(User.username == form.username.data).first():
             user = User.query.filter(User.username == form.username.data).first()
 
-            if bcrypt.checkpw(form.password.data.encode(), user.password.encode()):
+            if bcrypt.checkpw(form.password.data.encode(),
+                              user.password.encode()):
                 login_user(user)
-                flash('Logged in successfully.')
+                flash('Logged in successfully.', 'success')
                 return redirect(url_for('index'))
 
-        flash('Wrong username or password')
+        flash('Wrong username or password', 'error')
     return render_template('login.html', form=form)
 
 
