@@ -37,29 +37,42 @@
                         {% endif %}
                     {% endwith %}
 
-                    <form method="POST" action="{{ url_for('auth.login') }}">
+                    {% for field in form.errors %}
+                        {% for error in form.errors[field] %}
+                            <div class="error">
+                                <strong>Error!</strong> {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+
+                    <form method="POST" action="{{ url_for('auth.register') }}">
                         {{ form.csrf_token }}
+
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-{#                            <input type="text" class="form-control" placeholder="username">#}
-
-                            {{ form.username(size=20, class_="form-control") }}
+                            {{ form.username(size=20, class_="form-control", placeholder="Username")}}
                         </div>
+
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-{#                            <input type="password" class="form-control" placeholder="password">#}
-                            {{ form.password(size=20, class_="form-control") }}
+                            {{ form.password(size=20, class_="form-control", placeholder="New password") }}
                         </div>
-                        <div class="row align-items-center remember">
-                            <input type="checkbox">Remember Me
+
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            {{ form.password_again(size=20, class_="form-control", placeholder="Confirm password") }}
                         </div>
+
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn float-right login_btn">
                         </div>
+
                     </form>
                 </div>
                 <div class="card-footer">
