@@ -1,16 +1,27 @@
 .row {
   display: flex;
+  flex: 20%
   flex-wrap: wrap;
   padding: 20px;
 }
 
-.column {
-  flex: 30%;
-  padding: 20px;
+.text-block {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: black;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.containerr {
+ position: relative;
 }
 
 .column img {
   margin-top: 8px;
+  padding: 20px;
   vertical-align: middle;
 }
 
