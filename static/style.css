@@ -1,9 +1,3 @@
-.row {
-  display: flex;
-  flex: 20%
-  flex-wrap: wrap;
-  padding: 20px;
-}
 
 .text-block {
   position: absolute;
@@ -15,20 +9,149 @@
   padding-right: 20px;
 }
 
-.containerr {
- position: relative;
-}
-
-.column img {
-  margin-top: 8px;
-  padding: 20px;
-  vertical-align: middle;
-}
-
 html,body{
   background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
   font-family: 'Numans', sans-serif;
+}
+
+a {
+  color: #363636;
+}
+.btn {
+  background: transparent;
+  margin: 3px;
+  border: 1px solid #eaeaea;
+  border-radius: 0px;
+}
+.btn:hover {
+  background: #eaeaea;
+  color: black;
+}
+.tours {
+  display: flex;
+  padding: 0;
+
+  flex-flow: row wrap;
+  align-content: center;
+  align-items: stretch;
+  justify-content: center;
+}
+.tourcard {
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  flex: 0 1 360px;
+  margin: 15px;
+  padding: 0;
+}
+.tourcard:hover {
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(0,0,0,.5);
+  cursor: pointer;
+}
+.tourcard figure {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  width: 100%;
+}
+.tourpic {
+  background: #444;
+  position: relative;
+}
+.tourbtn {
+  margin: 0;
+  padding: 0;
+}
+.tourbtn:after {
+  clear: both;
+}
+.tourcard figure .tourpic img {
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  opacity: .50;
+}
+.tourcard:hover figure .tourpic img {
+  opacity: 0.9;
+}
+.tourcard figure .tourpic .tourcat {
+  color: #fff;
+  font-size: .8em;
+  padding: 3px 5px;
+  position: absolute;
+  right: 15px;
+  text-transform: uppercase;
+  bottom: 15px;
+}
+.tourcard figure .tourpic .tourday {
+  text-transform: uppercase;
+  color: #fff;
+  font-size: .8em;
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  padding: 3px 5px;
+}
+.tourcard figure .tourpic .tourday.hot {
+  background: #000;
+  background: red;
+  background: -webkit-linear-gradient(0deg,red,orange);
+  background: linear-gradient(90deg,red,orange);
+  background-size: 200% 200%;
+  -webkit-animation: hot 10s ease infinite;
+  -moz-animation: hot 10s ease infinite;
+  -o-animation: hot 10s ease infinite;
+  animation: hot 10s ease infinite;
+}
+.tourcard figure .tourbtn {
+  background: transparent;
+  display: flex;
+  width: 100%;
+  flex-flow: row wrap;
+  align-content: center;
+}
+.tourcard figure .tourbtn a {
+  flex: 1;
+}
+.tourcard figure figcaption {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding: 15px;
+  margin: 0 0 30px;
+  display: flex;
+  flex-flow: column nowrap;
+  color: white;
+}
+figcaption h3 a {
+  text-decoration: none;
+  color: white;
+}
+.description {
+  opacity: 0;
+  display: none;
+}
+
+.tourcard:hover figure figcaption .description,
+.tourcard:hover figure figcaption .tourprice {
+  display: block;
+  opacity: 1;
 }

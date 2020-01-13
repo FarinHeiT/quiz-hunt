@@ -8,8 +8,6 @@ from app import db
 auth = Blueprint('auth', __name__, template_folder='templates', url_prefix='/auth')
 
 
-# TODO: Use Bcrypt
-
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
