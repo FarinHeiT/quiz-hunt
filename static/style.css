@@ -20,12 +20,7 @@ html,body{
 a {
   color: #363636;
 }
-.btn {
-  background: transparent;
-  margin: 3px;
-  border: 1px solid #eaeaea;
-  border-radius: 0px;
-}
+
 .btn:hover {
   background: #eaeaea;
   color: black;
@@ -154,4 +149,21 @@ figcaption h3 a {
 .tourcard:hover figure figcaption .tourprice {
   display: block;
   opacity: 1;
+}
+
+.custom_btn {
+  color: black;
+  background-color: #FFC312;
+  width: 100px;
+  border-radius: 10px;
+}
+
+.custom-navbar {
+  display: flex;
+  padding: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5) !important;
+}
 }

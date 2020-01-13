@@ -17,41 +17,28 @@
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-<div class="pos-f-t">
-    <div class="collapse" id="navbarToggleExternalContent">
-        <div class="bg-dark p-4">
-            <button class="btn btn-outline-primary" type="button">btn</button>
-            <button class="btn btn-outline-primary" type="button">btn</button>
-            <button class="btn btn-outline-primary" type="button">btn</button>
-            <button class="btn btn-outline-primary" type="button">btn</button>
-
-        </div>
+<div class="custom-navbar justify-content-around">
+    <div>
+        <button class="btn custom_btn" type="button">New Quiz</button>
     </div>
-    <nav class="navbar navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
-                aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div>
-            <button class="btn btn-outline-primary" type="button">New Quiz</button>
-            {% if not current_user.is_authenticated %}
-                <a href="{{ url_for('auth.login') }}">
-                    <button class="btn btn-outline-primary" type="button">Login</button>
-                </a>
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.login') }}">
+                <button class="btn custom_btn" type="button">Login</button>
+            </a>
+            <div>
                 <a href="{{ url_for('auth.register') }}">
-                    <button class="btn btn-outline-primary" type="button">Register</button>
+                    <button class="btn custom_btn" type="button">Register</button>
                 </a>
-            {% else %}
-                <a href="{{ url_for('auth.logout') }}">
-                    <button class="btn btn-outline-secondary" type="button">Log Out</button>
-                </a>
-            {% endif %}
-        </div>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </nav>
+            </div>
+        {% else %}
+            <a href="{{ url_for('auth.logout') }}">
+                <button class="btn custom_btn" type="button">Log Out</button>
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+
 </div>
 <div class="row">
     <div class="d-flex flex-wrap justify-content-around">
