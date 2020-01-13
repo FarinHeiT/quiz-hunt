@@ -20,7 +20,7 @@ def login():
             user = User.query.filter(User.username == form.username.data).first()
 
             if bcrypt.checkpw(form.password.data.encode(),
-                              user.password.encode()):
+                              user.password):
                 login_user(user)
                 return redirect(url_for('index'))
 
@@ -61,7 +61,7 @@ def register():
         # add the new user to the database
         db.session.add(new_user)
         db.session.commit()
-
+        login_user(new_user)
         return redirect(url_for('index'))
 
     return render_template('registration.html', form=form)
