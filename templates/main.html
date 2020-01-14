@@ -19,6 +19,12 @@
 <body>
 <div class="custom-navbar justify-content-around">
     <div>
+        <a href="{{ url_for('about.about_us') }}">
+        <button class="btn custom_btn" type="button">About</button>
+        </a>
+    </div>
+
+    <div>
         <button class="btn custom_btn" type="button">New Quiz</button>
     </div>
         {% if not current_user.is_authenticated %}

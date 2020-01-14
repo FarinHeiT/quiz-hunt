@@ -14,6 +14,10 @@ migrate = Migrate(app, db)
 from auth.auth_bp import auth
 app.register_blueprint(auth)
 
+from auth.about_bp import about
+app.register_blueprint(about)
+
+
 from models import User
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,9 +31,7 @@ from models import Poll
 @app.route('/')
 def index():
     polls = Poll.query.order_by(Poll.created_date.desc()).all()
-
     return render_template('main.html', polls=polls)
 
 if __name__ == '__main__':
     app.run()
-
