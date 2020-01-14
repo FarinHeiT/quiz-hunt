@@ -27,7 +27,8 @@ from models import Poll
 @app.route('/')
 def index():
     polls = Poll.query.order_by(Poll.created_date.desc()).all()
-    return render_template('main.html', my_quiz=polls)
+
+    return render_template('main.html', polls=polls)
 
 if __name__ == '__main__':
     app.run()

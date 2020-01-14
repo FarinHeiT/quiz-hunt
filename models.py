@@ -21,6 +21,8 @@ class Poll(db.Model):
     created_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     questions = db.relationship('Question', backref='poll', lazy=True)
 
+
+
     def __repr__(self):
         return f'Poll: {self.title}'
 
