@@ -23,9 +23,11 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.query.get(user_id)
 
+from models import Poll
 @app.route('/')
 def index():
-    return render_template('main.html')
+    polls = Poll.query.order_by(Poll.created_date.desc()).all()
+    return render_template('main.html', my_quiz=polls)
 
 if __name__ == '__main__':
     app.run()
