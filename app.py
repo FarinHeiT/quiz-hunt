@@ -14,14 +14,16 @@ migrate = Migrate(app, db)
 from auth.auth_bp import auth
 app.register_blueprint(auth)
 
-from auth.about_bp import about
-app.register_blueprint(about)
 
 
 from models import User
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
+@app.route('/about')
+def about_us():
+    return render_template('about.html')
 
 @login_manager.user_loader
 def load_user(user_id):
