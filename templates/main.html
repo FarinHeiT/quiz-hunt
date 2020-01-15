@@ -53,13 +53,13 @@
                         <figure>
                             <div class="tourpic">
                                 <img width="320" height="180" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg">
-                                <span class="tourcat">{{ poll.title }}</span>
+                                <span class="tourcat">{{ poll.author.username  }}</span>
                                 <span class="tourday hot">Questions: {{ poll.questions|length }}</span>
                             </div>
                             <figcaption>
                                 <h3 class="entry-title">
                                     <a href="#">{{ poll.title }}</a></h3>
-                                <span class="description">The quiz description</span>
+                                <span class="description">{{ poll.description }}</span>
                       </span>
                             </figcaption>
                             <div class="tourbtn">
