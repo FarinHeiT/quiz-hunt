@@ -18,6 +18,11 @@
 </head>
 <body>
 <div class="custom-navbar justify-content-around">
+
+    <a href="{{ url_for('index') }}">
+        <img id='logo' src="https://image.flaticon.com/icons/svg/2473/2473139.svg" alt="">
+    </a>
+
     <div>
         <a href="{{ url_for('about.about_us') }}">
         <button class="btn custom_btn" type="button">About</button>
@@ -46,13 +51,12 @@
 </div>
 
 </div>
-<div class="row">
-    <div class="d-flex flex-wrap justify-content-around">
+    <div class="d-flex flex-wrap justify-content-between">
         {% for poll in polls %}
                     <div class="tourcard">
                         <figure>
                             <div class="tourpic">
-                                <img width="320" height="180" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg">
+                                <img width="320" height="180" src="{{ url_for('get_file', filename=poll.image_name) }}">
                                 <span class="tourcat">{{ poll.author.username  }}</span>
                                 <span class="tourday hot">Questions: {{ poll.questions|length }}</span>
                             </div>
@@ -71,6 +75,5 @@
                     </div>
         {% endfor %}
     </div>
-</div>
 </body>
 </html>

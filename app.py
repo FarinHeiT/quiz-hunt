@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -32,6 +32,11 @@ from models import Poll
 def index():
     polls = Poll.query.order_by(Poll.created_date.desc()).all()
     return render_template('main.html', polls=polls)
+
+
+@app.route('/files/<path:filename>')
+def get_file(filename):
+    return send_from_directory('files', filename)
 
 if __name__ == '__main__':
     app.run()
