@@ -6,7 +6,6 @@ from app import app
 from app import db
 from models import *
 
-
 @pytest.fixture
 def client():
     file = tempfile.mkstemp()
