@@ -11,8 +11,14 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!--Custom styles-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='auth/login.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="custom-navbar justify-content-around">
+    <a href="{{ url_for('index') }}">
+        <img id='logo' src="https://image.flaticon.com/icons/svg/2473/2473139.svg" alt="">
+    </a>
+</div>
 
     <div class="container">
         <div class="d-flex justify-content-center h-100">

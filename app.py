@@ -29,7 +29,10 @@ def about_us():
 def load_user(user_id):
     return User.query.get(user_id)
 
+
 from models import Poll
+
+
 @app.route('/')
 def index():
     polls = Poll.query.order_by(Poll.created_date.desc()).all()
@@ -39,6 +42,7 @@ def index():
 @app.route('/files/<path:filename>')
 def get_file(filename):
     return send_from_directory('files', filename)
+
 
 if __name__ == '__main__':
     app.run()
