@@ -44,5 +44,9 @@ def get_file(filename):
     return send_from_directory('files', filename)
 
 
+@app.errorhandler(404)
+def pagenotfound(e):
+    return render_template('404.html')
+
 if __name__ == '__main__':
     app.run()
