@@ -15,6 +15,9 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          crossorigin="anonymous">
 </head>
 <body>
 <div class="custom-navbar justify-content-around">
@@ -43,9 +46,12 @@
             </div>
         {% else %}
             <a href="{{ url_for('auth.logout') }}">
-                <button class="btn custom_btn" type="button">Log Out</button>
+                <button class="btn custom_btn" type="button">Log Out </button>
             </a>
+    <div style="color: white;">
+    <p>{{ current_user }}</p>
         {% endif %}
+        </div>
     </div>
 
 </div>
