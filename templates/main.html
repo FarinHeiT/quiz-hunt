@@ -31,10 +31,11 @@
         <button class="btn custom_btn" type="button">About</button>
         </a>
     </div>
-
+{% if current_user.is_authenticated %}
     <div>
         <button class="btn custom_btn" type="button">Create</button>
     </div>
+    {% endif %}
         {% if not current_user.is_authenticated %}
             <a href="{{ url_for('auth.login') }}">
                 <button class="btn custom_btn" type="button">Login</button>
