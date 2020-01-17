@@ -10,6 +10,28 @@ class User(db.Model, UserMixin):
     polls = db.relationship('Poll', backref='author', lazy=True)
     completed_polls = db.relationship('CompletedPoll', backref='completed_by', lazy=True)
 
+    def create_poll(self, title, description, data):
+        """ Creates new poll with given Q, Qno and answer options {'q1': (1, [a, b]} """
+
+        new_poll = Poll(author_id=self.id,
+                        title=title,
+                        image_name='poll.jpg',
+                        description=description)
+
+        # q: question, q_no: question number ans_opt: answer options
+        for q, options in data.items():
+            q_no, answer_options = options
+
+            new_poll.create_question(q, q_no)
+
+            # Get newly created question
+            question = Question.query.filter(Question.text==q).first()
+            for option in answer_options:
+                question.create_ans_opt(option)
+
+        self.polls.append(new_poll)
+        db.session.commit()
+
     def __repr__(self):
         return f'User: {self.username}'
 
@@ -23,6 +45,13 @@ class Poll(db.Model):
     created_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     questions = db.relationship('Question', backref='poll', lazy=True)
 
+    def create_question(self, text, question_no):
+        new_question = Question(poll_id=self.id,
+                                text=text,
+                                question_no=question_no)
+
+        self.questions.append(new_question)
+
     def __repr__(self):
         return f'Poll: {self.title}'
 
@@ -33,6 +62,12 @@ class Question(db.Model):
     text = db.Column(db.String(120))
     question_no = db.Column(db.Integer)
     answer_options = db.relationship('AnswerOption', backref='question', lazy=True)
+
+    def create_ans_opt(self, text):
+        new_ans_opt = AnswerOption(question_id=self.id,
+                                   text=text)
+
+        self.answer_options.append(new_ans_opt)
 
     def __repr__(self):
         return f'Question: {self.text}'
