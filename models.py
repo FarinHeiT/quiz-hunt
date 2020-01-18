@@ -1,5 +1,3 @@
-import json
-
 from app import db
 from datetime import datetime
 from flask_login import UserMixin
@@ -62,7 +60,7 @@ class Poll(db.Model):
             answer_options = [(answer_option.text, answer_option.id)
                               for answer_option in question.answer_options]
             data[question.text] = (question.question_no, answer_options)
-        return json.dumps(data)
+        return data
 
     def __repr__(self):
         return f'Poll: {self.title}'
