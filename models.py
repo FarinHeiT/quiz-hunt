@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
             new_poll.create_question(q, q_no)
 
             # Get newly created question
-            question = Question.query.filter(Question.text==q).first()
+            question = Question.query.filter(Question.text==q, Question.poll_id==self.id).first()
             for option in answer_options:
                 question.create_ans_opt(option)
 
