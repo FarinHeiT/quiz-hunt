@@ -1,7 +1,9 @@
-from flask import Flask, render_template, send_from_directory
-from flask_login import LoginManager
+from flask import Flask, render_template, send_from_directory, redirect, url_for
+from flask_login import LoginManager, current_user, login_required
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from auth.forms import SuggestForm
+
 
 from config import Config
 
@@ -16,14 +18,29 @@ app.register_blueprint(auth)
 
 
 
-from models import User
+from models import User, Suggestion
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+
+@app.route('/suggest', methods=['GET', 'POST'])
+@login_required
+def suggest():
+    form = SuggestForm()
+    if form.validate_on_submit():
+        message = form.text.data
+        class_message = Suggestion(message=message, author_id=current_user.id)
+        db.session.add(class_message)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('suggestions.html', form=form)
 
 
 @app.route('/about')
 def about_us():
     return render_template('about.html')
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -47,6 +64,7 @@ def get_file(filename):
 @app.errorhandler(404)
 def pagenotfound(e):
     return render_template('404.html')
+
 
 if __name__ == '__main__':
     app.run()

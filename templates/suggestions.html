@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Suggestions
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron jumbotron-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-lg-12">
+                <h1 class="h1">
+                    Contact us <small>Feel free to contact us</small></h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="well well-sm">
+                <form method="POST" action="{{ url_for('suggest') }}">
+                    {{ form.csrf_token }}
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">
+                                Message</label>
+                            {{ form.text(id="message", class="form-control", rows="9", cols="25", required="required",
+                                placeholder="Message")}}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        {{ form.button(type="submit", class="btn btn-primary pull-right", id="btnContactUs")}}
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

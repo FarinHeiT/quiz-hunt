@@ -104,3 +104,10 @@ class AnsweredQuestion(db.Model):
     def __repr__(self):
         return f'Question: {self.question} ' \
                f'Answer: {self.answer_option.text}'
+
+
+class Suggestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String(1000))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+

@@ -1,4 +1,15 @@
 {% extends 'base.html' %}
+
+{% block title %}
+About
+{% endblock %}
+
+{% block button %}
+<a href="{{ url_for('suggest') }}">
+                <button class="btn custom_btn" type="button">Suggest</button>
+            </a>
+{% endblock %}
+
 {% block body %}
 
 {% endblock %}
