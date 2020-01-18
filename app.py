@@ -21,6 +21,7 @@ app.register_blueprint(auth)
 from models import User, Suggestion
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'auth.login'
 
 
 
