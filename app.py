@@ -14,7 +14,9 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from auth.auth_bp import auth
+from polls.polls_bp import polls
 app.register_blueprint(auth)
+app.register_blueprint(polls)
 
 
 
@@ -22,8 +24,6 @@ from models import User, Suggestion
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
-
-
 
 @app.route('/suggest', methods=['GET', 'POST'])
 @login_required
