@@ -31,7 +31,8 @@ def suggest():
     form = SuggestForm()
     if form.validate_on_submit():
         message = form.text.data
-        class_message = Suggestion(message=message, author_id=current_user.id)
+        topic = form.topic.data
+        class_message = Suggestion(message=message, author_id=current_user.id, topic=topic)
         db.session.add(class_message)
         db.session.commit()
         return redirect(url_for('index'))
