@@ -31,14 +31,13 @@ $(function(){
         ink.css({top: y+'px', left: x+'px'}).addClass("animate");
     //ripple end
 
-        var choice = $(this).parent().find('input:radio').val();
         // Store the answer
-        data[keys[questionNo]] = choice
+        data[keys[questionNo]] = $(this).parent().find('input:radio').val()
 
         setTimeout(function(){
             $('#quiz').fadeOut();
             questionNo++;
-            if((questionNo + 1) > keys.length){
+            if((questionNo) + 1 > keys.length){
 
                 $.ajax({
                     url: "",
@@ -74,7 +73,7 @@ $(function(){
     function renderNextQuestion() {
         // First question pre-loading
         $('#question').html(keys[questionNo]);
-        $.each(questions[keys[0]][1], (i, data) => {
+        $.each(questions[keys[questionNo]][1], (i, data) => {
             // Clone of answer option
             $('ul').append(document.querySelector('template').content.cloneNode(true));
             // Assign value to answer option
