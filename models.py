@@ -2,14 +2,21 @@ from app import db
 from datetime import datetime
 from flask_login import UserMixin
 from sqlalchemy import func
+from flask_security import RoleMixin
+
+roles_users = db.Table('roles_users',
+                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
+                       )
 
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True)
     password = db.Column(db.String(30))
-    polls = db.relationship('Poll', backref='author', lazy='dynamic')
+    polls = db.relationship('Poll', backref='author', lazy=True)
     completed_polls = db.relationship('CompletedPoll', backref='completed_by', lazy=True)
+    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
     def create_poll(self, title, description, data):
         """ Creates new poll with given Q, Qno and answer options {'q1': (1, [a, b])} """
@@ -34,6 +41,11 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f'User: {self.username}'
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    description = db.Column(db.String(200))
 
 
 class Poll(db.Model):

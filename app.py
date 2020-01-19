@@ -3,12 +3,18 @@ from flask_login import LoginManager, current_user, login_required
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+from flask_security import SQLAlchemySessionUserDatastore, Security
+
 
 
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+admin = Admin(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -48,9 +54,15 @@ def about_us():
 def load_user(user_id):
     return User.query.get(user_id)
 
+# add admin pages here
+from models import *
+admin.add_view(ModelView(Poll, db.session))
+admin.add_view(ModelView(Suggestion, db.session))
+admin.add_view(ModelView(User, db.session))
 
-from models import Poll
-
+# flask-security
+user_datasore = SQLAlchemySessionUserDatastore(db, User, Role)
+security = Security(app, user_datasore)
 
 @app.route('/')
 def index():
