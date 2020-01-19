@@ -1,7 +1,6 @@
 /*--------loader script-----------*/
 $(function(){
-    var questionNo = 0;
-    var correctCount = 0;
+    let questionNo = 0;
     let keys = Object.keys(questions);
     let data = {};
     
@@ -14,7 +13,7 @@ $(function(){
 
         parent = $(this);
 
-        if(parent.find(".ink").length == 0)
+        if(parent.find(".ink").length === 0)
             parent.prepend("<span class='ink'></span>");
             
         ink = parent.find(".ink");
@@ -40,8 +39,15 @@ $(function(){
             $('#quiz').fadeOut();
             questionNo++;
             if((questionNo + 1) > keys.length){
-                alert('Poll completed');
-                alert(JSON.stringify(data));
+
+                $.ajax({
+                    url: "",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+                });
+
                 $('label.element-animation').unbind('click');
             } else {
                 $('#qid').html(questionNo + 1);
