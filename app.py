@@ -53,9 +53,10 @@ def about_us():
 def load_user(user_id):
     return User.query.get(user_id)
 
-
-from models import Poll
+# add admin pages here
+from models import *
 admin.add_view(ModelView(Poll, db.session))
+admin.add_view(ModelView(Suggestion, db.session))
 
 
 @app.route('/')
