@@ -36,6 +36,7 @@ class User(db.Model, UserMixin):
         return f'User: {self.username}'
 
 
+
 class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -121,3 +122,7 @@ class Suggestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(1000))
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    topic = db.Column(db.String(200))
+
+    def __repr__(self):
+        return f'User: {self.author_id}'

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Length
 
 
@@ -26,3 +26,4 @@ class RegistrationForm(FlaskForm):
 class SuggestForm(FlaskForm):
     text = StringField('text', validators=[DataRequired()])
     button = SubmitField(label='Submit')
+    topic = SelectField('Topic', choices=[('Error', 'Error'), ('Suggest', 'Suggest'), ('rate', 'rate')])
