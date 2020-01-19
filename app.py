@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_security import SQLAlchemySessionUserDatastore, Security
 
 
 
@@ -57,7 +58,11 @@ def load_user(user_id):
 from models import *
 admin.add_view(ModelView(Poll, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
+admin.add_view(ModelView(User, db.session))
 
+# flask-security
+user_datasore = SQLAlchemySessionUserDatastore(db, User, Role)
+security = Security(app, user_datasore)
 
 @app.route('/')
 def index():
