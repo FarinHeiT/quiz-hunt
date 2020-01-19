@@ -1,7 +1,6 @@
 /*--------loader script-----------*/
 $(function(){
-    var questionNo = 0;
-    var correctCount = 0;
+    let questionNo = 0;
     let keys = Object.keys(questions);
     let data = {};
     
@@ -14,7 +13,7 @@ $(function(){
 
         parent = $(this);
 
-        if(parent.find(".ink").length == 0)
+        if(parent.find(".ink").length === 0)
             parent.prepend("<span class='ink'></span>");
             
         ink = parent.find(".ink");
@@ -32,16 +31,28 @@ $(function(){
         ink.css({top: y+'px', left: x+'px'}).addClass("animate");
     //ripple end
 
-        var choice = $(this).parent().find('input:radio').val();
         // Store the answer
-        data[keys[questionNo]] = choice
+        data[keys[questionNo]] = $(this).parent().find('input:radio').val()
 
         setTimeout(function(){
             $('#quiz').fadeOut();
             questionNo++;
-            if((questionNo + 1) > keys.length){
-                alert('Poll completed');
-                alert(JSON.stringify(data));
+            if((questionNo) + 1 > keys.length){
+
+                $.ajax({
+                    url: "",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+                    complete: () => {
+                        alert('Poll completed');
+                        window.location.replace(window.location.origin);
+                    }
+                });
+
+
+
                 $('label.element-animation').unbind('click');
             } else {
                 $('#qid').html(questionNo + 1);
@@ -62,7 +73,7 @@ $(function(){
     function renderNextQuestion() {
         // First question pre-loading
         $('#question').html(keys[questionNo]);
-        $.each(questions[keys[0]][1], (i, data) => {
+        $.each(questions[keys[questionNo]][1], (i, data) => {
             // Clone of answer option
             $('ul').append(document.querySelector('template').content.cloneNode(true));
             // Assign value to answer option

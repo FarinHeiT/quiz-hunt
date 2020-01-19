@@ -47,7 +47,6 @@ class Role(db.Model, RoleMixin):
     description = db.Column(db.String(200))
 
 
-
 class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -55,7 +54,7 @@ class Poll(db.Model):
     image_name = db.Column(db.String(120), default='poll.jpg')
     description = db.Column(db.Text(400))
     created_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    questions = db.relationship('Question', backref='poll', lazy=True)
+    questions = db.relationship('Question', backref='poll', lazy='dynamic')
 
     def create_question(self, text, question_no):
         """ Creates question to the parent poll """
@@ -74,6 +73,26 @@ class Poll(db.Model):
                               for answer_option in question.answer_options]
             data[question.text] = (question.question_no, answer_options)
         return data
+
+    def complete_poll(self, data, author_id):
+        """ Writes the answer data to DB """
+
+        completed_poll = CompletedPoll(poll_id=self.id,
+                                       author_id=author_id)
+        db.session.flush()
+
+        for answer in data.items():
+            question_id = self.questions.filter(Question.text == answer[0]).first().id
+            print(completed_poll.id, question_id, answer[1])
+            answered_question = AnsweredQuestion(completedpoll_id=completed_poll.id,
+                                                 question_id=question_id,
+                                                 answer_id=answer[1]
+                                                 )
+            completed_poll.answered_questions.append(answered_question)
+
+        print(completed_poll)
+        db.session.add(completed_poll)
+        db.session.commit()
 
     def __repr__(self):
         return f'Poll: {self.title}'

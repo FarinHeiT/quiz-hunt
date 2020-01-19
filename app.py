@@ -67,7 +67,7 @@ security = Security(app, user_datasore)
 @app.route('/')
 def index():
     polls = Poll.query.order_by(Poll.created_date.desc()).all()
-    return render_template('main.html', pollss=polls)
+    return render_template('main.html', polls=polls)
 
 
 @app.route('/files/<path:filename>')
