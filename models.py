@@ -22,10 +22,9 @@ class User(db.Model, UserMixin):
         for q, options in data.items():
             q_no, answer_options = options
 
-            new_poll.create_question(q, q_no)
-
             # Get newly created question
-            question = Question.query.filter(Question.text == q, Question.poll_id == self.id).first()
+            question = new_poll.create_question(q, q_no)
+
             for option in answer_options:
                 question.create_ans_opt(option)
 
@@ -52,6 +51,7 @@ class Poll(db.Model):
                                 question_no=question_no)
 
         self.questions.append(new_question)
+        return new_question
 
     def get_json(self):
         """ Return JSON serialized poll """
