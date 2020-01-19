@@ -3,12 +3,17 @@ from flask_login import LoginManager, current_user, login_required
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+
 
 
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+admin = Admin(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -50,6 +55,7 @@ def load_user(user_id):
 
 
 from models import Poll
+admin.add_view(ModelView(Poll, db.session))
 
 
 @app.route('/')
