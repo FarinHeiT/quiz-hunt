@@ -59,13 +59,13 @@
 
 </div>
     <div class="d-flex flex-wrap justify-content-between">
-        {% for poll in pollss %}
+        {% for poll in polls %}
                     <div class="tourcard">
                         <figure>
                             <div class="tourpic">
                                 <img width="320" height="180" src="{{ url_for('get_file', filename=poll.image_name) }}">
                                 <span class="tourcat">{{ poll.author.username  }}</span>
-                                <span class="tourday hot">Questions: {{ poll.questions|length }}</span>
+                                <span class="tourday hot">Questions: {{ poll.questions.count() }}</span>
                             </div>
                             <figcaption>
                                 <h3 class="entry-title">

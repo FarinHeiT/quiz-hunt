@@ -46,7 +46,13 @@ $(function(){
                     data: JSON.stringify(data),
                     contentType: 'application/json; charset=utf-8',
                     dataType: "json",
+                    complete: () => {
+                        alert('Poll completed');
+                        window.location.replace(window.location.origin);
+                    }
                 });
+
+
 
                 $('label.element-animation').unbind('click');
             } else {
