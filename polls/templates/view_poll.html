@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    View
+{% endblock %}
+
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="{{ url_for('static', filename='polls/display.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <template>
+        <div style="background-color: #1b262c; display: inline-block" class="text-center">
+            <h5 style="color: white"></h5>
+            <canvas id="myChart" width="200" height="200" style="background-color: #1b262c;"></canvas>
+        </div>
+    </template>
+    <div id="results">
+
+    </div>
+
+    <script>
+        let data = {{ data|tojson }}
+    </script>
+{% endblock %}

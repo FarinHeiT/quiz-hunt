@@ -12,6 +12,13 @@ def take_poll(poll_id):
     if request.method == 'POST':
         data = request.get_json()
         poll.complete_poll(data, current_user.id)
+        return 'Successfully stored'
 
-        return 'ok'
     return render_template('take_poll.html', data=poll.get_json())
+
+
+@polls.route('/view/<int:poll_id>')
+def view_poll(poll_id):
+    poll = Poll.query.get(poll_id)
+
+    return render_template('view_poll.html', data=poll.aggregate_results())
