@@ -6,6 +6,7 @@ from auth.forms import SuggestForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_security import SQLAlchemySessionUserDatastore, Security
+from flask_socketio import SocketIO, send
 
 
 
@@ -13,6 +14,17 @@ from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+socketio = SocketIO(app)
+@socketio.on('message')
+def handlwMessage(msg):
+    print('Message: ' + msg)
+    send(msg, broadcast=True)
+
+@app.route('/chat')
+@login_required
+def Chat():
+    return render_template('chat.html')
 
 # TODO Polls creationg and walkthrough form validation using wtforms
 
@@ -63,7 +75,7 @@ admin.add_view(ModelView(Suggestion, db.session))
 admin.add_view(ModelView(User, db.session))
 
 # flask-security
-user_datascore = SQLAlchemySessionUserDatastore(db, User, Role)
+user_datascore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 security = Security(app, user_datascore)
 
 @app.route('/')
@@ -83,4 +95,4 @@ def pagenotfound(e):
 
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app)
