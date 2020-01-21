@@ -14,6 +14,8 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
+# TODO Polls creationg and walkthrough form validation using wtforms
+
 admin = Admin(app)
 
 db = SQLAlchemy(app)

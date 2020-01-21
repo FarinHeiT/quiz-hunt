@@ -226,7 +226,7 @@ form.login a:hover
 
 ul li{
   color: #AAAAAA;
-  display: flex;
+  display: block;
   position: relative;
   float: left;
   width: 100%;
@@ -365,14 +365,19 @@ input[type='text'] {
 #title-input {
     background-color: #e0ac10;
     flex: 2;
-
 }
 
-#title-question {
+#title-question, .answer-option {
     background-color: #222222;
-    flex: 2;
+    width: 100%;
+    height: 100%;
     font-size: 18px;
 }
+
+.answer-option {
+    text-align: right;
+}
+
 
 input[type='text']:focus {
     outline: none;
@@ -382,3 +387,8 @@ h3 {
     display: flex;
 }
 
+#add-option, #add-question, #create-poll {
+    width: 5%;
+    margin-left: 10px;
+    cursor: pointer;
+}
