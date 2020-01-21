@@ -1,11 +1,21 @@
-from flask import Blueprint, render_template, url_for, redirect, flash, jsonify, request
-from flask_login import current_user
+from flask import Blueprint, render_template, request
+from flask_login import current_user, login_required
 from models import  Poll
 
 polls = Blueprint('polls', __name__, template_folder='templates', url_prefix='/polls')
 
 
+@polls.route('/create', methods=('GET', 'POST'))
+@login_required
+def create_poll():
+    if request.method == 'POST':
+        return '1'
+
+    return render_template('create_poll.html')
+
+
 @polls.route('/<int:poll_id>', methods=('GET', 'POST'))
+@login_required
 def take_poll(poll_id):
     poll = Poll.query.get(poll_id)
 
@@ -22,3 +32,4 @@ def view_poll(poll_id):
     poll = Poll.query.get(poll_id)
 
     return render_template('view_poll.html', data=poll.aggregate_results())
+

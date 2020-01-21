@@ -65,7 +65,7 @@ form.login input[type="text"], form.login input[type="password"]
     padding: 5px 10px;
     background: #fff;
     border: 0;
-    border-bottom: 3px solid #75ba48;
+    border-bottom: 3px solid #FFC312;
     outline: 0;
     font-size: 15px;
     font-weight: 400;
@@ -95,8 +95,8 @@ form.login input[type="submit"]:hover
 
 .btn-success {
     color: #fff;
-    background-color: #75ba48;
-    border-color: #75ba48;
+    background-color: #FFC312;
+    border-color: #FFC312;
     width: 100%;
     /* font-weight: 600 !important; */
     padding: 7px 10px;
@@ -125,7 +125,7 @@ form.login a
 
 form.login a:hover
 {
-    color: #2ecc71;
+    color: #FFC312;
 }
 
 .pr-wrap
@@ -205,9 +205,9 @@ form.login a:hover
     width: 135%;
 }
 .question{
-    background: #75ba48;
+    background: #FFC312;
     padding: 20px;
-    color: #fff;
+    color: #000;
     border-bottom-right-radius: 55px;
     border-top-left-radius: 55px;
 }
@@ -226,7 +226,7 @@ form.login a:hover
 
 ul li{
   color: #AAAAAA;
-  display: block;
+  display: flex;
   position: relative;
   float: left;
   width: 100%;
@@ -289,20 +289,20 @@ ul li .check::before {
 }
 
 input[type=radio]:checked ~ .check {
-  border: 5px solid #00FF00;
+  border: 5px solid #FFC312;
 }
 
 input[type=radio]:checked ~ .check::before{
-  background: #00FF00;/*attr('data-background');*/
+  background: #FFC312;/*attr('data-background');*/
 }
 
 input[type=radio]:checked ~ label{
-  color: #00FF00;
+  color: #FFC312;
 }
 
 #result-of-question th{
   text-align: center;
-    background: #75ba48;
+    background: #FFC312;
     color: #fff;
     padding: 18px;
     font-size: 18px;
@@ -315,12 +315,12 @@ input[type=radio]:checked ~ label{
     padding: 18px;
     font-size: 15px;
     font-weight: 600;
-    border: 1px solid #75ba48;
+    border: 1px solid #FFC312;
 }
 
 #totalCorrect{
     color: #fff;
-    background: #75ba48;
+    background: #FFC312;
     padding: 22px 20px;
     border-radius: 1px;
     font-stretch: expanded;
@@ -346,7 +346,7 @@ ul {
 .ink {
     display: inline; 
     position: absolute;
-    background: #75ba48;
+    background: #FFC312;
     border-radius: 100%;
     transform: scale(0);
 }
@@ -355,5 +355,30 @@ ul {
 @keyframes ripple {
     /*scale the element to 250% to safely cover the entire link and fade it out*/
     100% {opacity: 0; transform: scale(2.5);}
+}
+
+input[type='text'] {
+    border: none;
+    padding: 5px;
+}
+
+#title-input {
+    background-color: #e0ac10;
+    flex: 2;
+
+}
+
+#title-question {
+    background-color: #222222;
+    flex: 2;
+    font-size: 18px;
+}
+
+input[type='text']:focus {
+    outline: none;
+}
+
+h3 {
+    display: flex;
 }
 

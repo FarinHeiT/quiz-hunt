@@ -61,8 +61,8 @@ admin.add_view(ModelView(Suggestion, db.session))
 admin.add_view(ModelView(User, db.session))
 
 # flask-security
-user_datasore = SQLAlchemySessionUserDatastore(db, User, Role)
-security = Security(app, user_datasore)
+user_datascore = SQLAlchemySessionUserDatastore(db, User, Role)
+security = Security(app, user_datascore)
 
 @app.route('/')
 def index():
