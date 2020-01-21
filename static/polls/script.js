@@ -32,7 +32,7 @@ $(function(){
     //ripple end
 
         // Store the answer
-        data[keys[questionNo]] = $(this).parent().find('input:radio').val()
+        data[keys[questionNo]] = $(this).parent().find('input:radio').val();
 
         setTimeout(function(){
             $('#quiz').fadeOut();
@@ -73,7 +73,7 @@ $(function(){
     function renderNextQuestion() {
         // First question pre-loading
         $('#question').html(keys[questionNo]);
-        $.each(questions[keys[questionNo]][1], (i, data) => {
+        $.each(questions[keys[questionNo]], (i, data) => {
             // Clone of answer option
             $('ul').append(document.querySelector('template').content.cloneNode(true));
             // Assign value to answer option

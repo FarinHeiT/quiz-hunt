@@ -7,16 +7,15 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='polls/poll_creation.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='polls/style.css ') }}"></link>
 </head>
 
 
 <body>
 <template>
-    <li id='item'>
-        <input type="radio" id="option" name="selector" value="1">
-        <label for="option" class="element-animation">/*-- comment --*/</label>
-        <div class="check"></div>
+    <li class='answer-item'>
+        <input type="text" id="title-option" class="answer-option" placeholder="">
     </li>
 </template>
 
@@ -28,8 +27,12 @@
 
                 <div id="quiz">
                     <div class="question">
-                        <h3><span class="label label-warning" id="qid">1</span>
+                        <h3>
+                            <span class="label label-warning" id="qid">1</span>
                             <input type="text" id="title-input" placeholder="Enter title here">
+                            <img id='add-option' src="{{ url_for('static', filename='polls/images/plus.svg') }}" alt="Add answer option">
+                            <img id='add-question' src="{{ url_for('static', filename='polls/images/next-question.svg') }}" alt="Add question">
+                            <img id='create-poll' src="{{ url_for('static', filename='polls/images/create-poll.svg') }}" alt="Add question">
                         </h3>
                     </div>
 

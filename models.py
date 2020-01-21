@@ -6,7 +6,7 @@ from flask_security import RoleMixin
 
 roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
+                       db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
                        )
 
 
@@ -26,21 +26,23 @@ class User(db.Model, UserMixin):
                         image_name='poll.jpg',
                         description=description)
 
-        # q: question, q_no: question number ans_opt: answer options
+        # q: question, options: answer options
         for q, options in data.items():
-            q_no, answer_options = options
+            answer_options = options
 
             # Get newly created question
-            question = new_poll.create_question(q, q_no)
+            question = new_poll.create_question(q)
 
             for option in answer_options:
                 question.create_ans_opt(option)
 
         self.polls.append(new_poll)
         db.session.commit()
+        return new_poll
 
     def __repr__(self):
         return f'User: {self.username}'
+
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,11 +59,10 @@ class Poll(db.Model):
     created_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     questions = db.relationship('Question', backref='poll', lazy='dynamic')
 
-    def create_question(self, text, question_no):
+    def create_question(self, text):
         """ Creates question to the parent poll """
         new_question = Question(poll_id=self.id,
-                                text=text,
-                                question_no=question_no)
+                                text=text)
 
         self.questions.append(new_question)
         return new_question
@@ -72,7 +73,7 @@ class Poll(db.Model):
         for question in self.questions:
             answer_options = [(answer_option.text, answer_option.id)
                               for answer_option in question.answer_options]
-            data[question.text] = (question.question_no, answer_options)
+            data[question.text] = answer_options
         return data
 
     def complete_poll(self, data, author_id):
@@ -119,7 +120,6 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
     text = db.Column(db.String(120))
-    question_no = db.Column(db.Integer)
     answer_options = db.relationship('AnswerOption', backref='question', lazy=True)
 
     def create_ans_opt(self, text):
