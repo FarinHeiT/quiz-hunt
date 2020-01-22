@@ -36,15 +36,13 @@ $(function() {
                 contentType: 'application/json; charset=utf-8',
                 dataType: "json",
                 complete: (r) => {
-                    alert(r);
-                    // window.location.replace(window.location.origin);
+                    alert(r.responseJSON['status'])
+                    window.location.replace(window.location.origin);
                 }
             });
 
         }
     });
-
-
 
     
     function addQuestion() {
@@ -72,9 +70,18 @@ $(function() {
         // Check poll title
         r = $('#title-input').val().length > 5;
 
+        // 5 Answer options max, 2 min
+        if ($('.answer-option').length > 5) {
+            alert('A question can have 5 answer options max');
+            r = false;
+        } else if ($('.answer-option').length < 2){
+            alert('A question must have at least 2 answer options');
+            r = false;
+        }
+
         // Check each answer option
         $.each($('.answer-option'), (i, input) => {
-            if (input.value.length <= 1) {
+            if (input.value.length <= 3) {
                 alert('Please fill all information...')
                 r = false;
                 return false
