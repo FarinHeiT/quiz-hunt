@@ -5,10 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-#from flask_security import SQLAlchemySessionUserDatastore, Security
+# from flask_security import SQLAlchemySessionUserDatastore, Security
 from flask_socketio import SocketIO, send
-
-
 
 from config import Config
 
@@ -17,9 +15,6 @@ app.config.from_object(Config)
 
 socketio = SocketIO(app)
 
-
-
-
 # TODO Polls creationg and walkthrough form validation using wtforms
 
 admin = Admin(app)
@@ -27,17 +22,19 @@ admin = Admin(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+# noinspection PyPep8
 from auth.auth_bp import auth
 from polls.polls_bp import polls
+
 app.register_blueprint(auth)
 app.register_blueprint(polls)
 
-
-
 from models import User, Suggestion
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
+
 
 @app.route('/suggest', methods=['GET', 'POST'])
 @login_required
@@ -62,31 +59,35 @@ def about_us():
 def load_user(user_id):
     return User.query.get(user_id)
 
+
 # add admin pages here
 from models import *
+
 admin.add_view(ModelView(Poll, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
 admin.add_view(ModelView(User, db.session))
 
+
 @app.route('/chat')
 @login_required
-def Chat():
+def chat():
     user = current_user
     messages = MsgHistory.query.all()
     return render_template('chat.html', messages=messages)
 
-@socketio.on('message')
-def handleMessage(msg):
 
+@socketio.on('message')
+def handle_message(msg):
     print('Message: ' + msg)
     message = MsgHistory(message=msg)
     db.session.add(message)
     db.session.commit()
     send(msg, broadcast=True)
 
+
 # flask-security
-#user_datascore = SQLAlchemySessionUserDatastore(db.session, User, Role)
-#security = Security(app, user_datascore)
+# user_datascore = SQLAlchemySessionUserDatastore(db.session, User, Role)
+# security = Security(app, user_datascore)
 
 @app.route('/')
 def index():
