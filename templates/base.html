@@ -39,9 +39,12 @@
         </a>
     </div>
     {% if current_user.is_authenticated %}
-    <div>
+    <a href="{{ url_for('polls.create_poll') }}">
         <button class="btn custom_btn" type="button">Create</button>
-    </div>
+    </a>
+    <a href="{{ url_for('Chat') }}">
+                <button class="btn custom_btn" type="button">Chat</button>
+            </a>
     {% endif %}
         {% if not current_user.is_authenticated %}
             <a href="{{ url_for('auth.login') }}">

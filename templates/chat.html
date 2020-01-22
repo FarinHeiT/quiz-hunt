@@ -17,13 +17,8 @@ Chat room
 		$(document).ready(function() {
 			var socket = io.connect('http://127.0.0.1:5000')
 
-			socket.on('connect', function() {
-				socket.send('User has connected')
-			})
-
 			socket.on('message', function(msg) {
 				$("#messages").append('<li>'+msg+'</li>')
-				console.log('got message')
 			})
 
 			$('#sendbutton').on('click', function() {
@@ -32,7 +27,11 @@ Chat room
 			})
 		})
 	</script>
-	<ul id="messages"></ul>
+	<ul id="messages">
+        {% for msg in messages %}
+        <li>{{ msg.message }}</li>
+        {% endfor %}
+    </ul>
 	<input type="text" id="myMessage" >
 	<button id="sendbutton">Send Message</button>
 	

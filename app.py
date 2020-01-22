@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from flask_security import SQLAlchemySessionUserDatastore, Security
+#from flask_security import SQLAlchemySessionUserDatastore, Security
 from flask_socketio import SocketIO, send
 
 
@@ -16,15 +16,9 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 socketio = SocketIO(app)
-@socketio.on('message')
-def handlwMessage(msg):
-    print('Message: ' + msg)
-    send(msg, broadcast=True)
 
-@app.route('/chat')
-@login_required
-def Chat():
-    return render_template('chat.html')
+
+
 
 # TODO Polls creationg and walkthrough form validation using wtforms
 
@@ -74,9 +68,25 @@ admin.add_view(ModelView(Poll, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
 admin.add_view(ModelView(User, db.session))
 
+@app.route('/chat')
+@login_required
+def Chat():
+    user = current_user
+    messages = MsgHistory.query.all()
+    return render_template('chat.html', messages=messages)
+
+@socketio.on('message')
+def handleMessage(msg):
+
+    print('Message: ' + msg)
+    message = MsgHistory(message=msg)
+    db.session.add(message)
+    db.session.commit()
+    send(msg, broadcast=True)
+
 # flask-security
-user_datascore = SQLAlchemySessionUserDatastore(db.session, User, Role)
-security = Security(app, user_datascore)
+#user_datascore = SQLAlchemySessionUserDatastore(db.session, User, Role)
+#security = Security(app, user_datascore)
 
 @app.route('/')
 def index():

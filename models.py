@@ -9,6 +9,10 @@ roles_users = db.Table('roles_users',
                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
                        )
 
+class MsgHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column('message', db.String(500))
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
