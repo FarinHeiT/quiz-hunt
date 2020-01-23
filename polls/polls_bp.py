@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import current_user, login_required
 from models import Poll
-from .validation import validate
+from .validation import validate_creation, validate_taking
 
 polls = Blueprint('polls', __name__, template_folder='templates', url_prefix='/polls')
 
@@ -13,7 +13,7 @@ def create_poll():
         data = request.get_json()
 
         # Data validation
-        if validate(data):
+        if validate_creation(data):
             new_poll = current_user.create_poll(data['title'], data['title'], data['questions'])
             return {'status': "Success"}
         else:
@@ -26,12 +26,14 @@ def create_poll():
 @login_required
 def take_poll(poll_id):
     poll = Poll.query.get(poll_id)
-
     if request.method == 'POST':
         data = request.get_json()
-        # TODO Server-side validation
-        poll.complete_poll(data, current_user.id)
-        return 'Successfully stored'
+
+        if validate_taking(data, poll.get_json()):
+            poll.complete_poll(data, current_user.id)
+            return {'status': "Success"}
+        else:
+            return {'status': 'ValidationError'}
 
     return render_template('take_poll.html', data=poll.get_json())
 
