@@ -27,3 +27,9 @@ class SuggestForm(FlaskForm):
     text = StringField('text', validators=[DataRequired()])
     button = SubmitField(label='Submit')
     topic = SelectField('Topic', choices=[('Error', 'Error'), ('Suggest', 'Suggest'), ('rate', 'rate')])
+
+
+class ChatForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired()])
+    text = StringField('text', validators=[DataRequired()])
+    button = SubmitField(label='Send')

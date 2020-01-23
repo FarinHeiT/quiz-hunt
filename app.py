@@ -2,11 +2,12 @@ from flask import Flask, render_template, send_from_directory, redirect, url_for
 from flask_login import LoginManager, current_user, login_required
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from auth.forms import SuggestForm
+from auth.forms import SuggestForm, ChatForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 # from flask_security import SQLAlchemySessionUserDatastore, Security
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, emit
+import jinja2
 
 from config import Config
 
@@ -66,23 +67,27 @@ from models import *
 admin.add_view(ModelView(Poll, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
 admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(MsgHistory, db.session))
 
 
-@app.route('/chat')
+@app.route('/chat', methods=['GET', 'POST'])
 @login_required
 def chat():
-    user = current_user
+    form = ChatForm()
     messages = MsgHistory.query.all()
-    return render_template('chat.html', messages=messages)
+    return render_template('chat.html', messages=messages, form=form)
 
 
-@socketio.on('message')
-def handle_message(msg):
-    print('Message: ' + msg)
-    message = MsgHistory(message=msg)
-    db.session.add(message)
-    db.session.commit()
-    send(msg, broadcast=True)
+def messageRecived():
+  print( 'message was received!!!' )
+
+@socketio.on( 'my event' )
+def handle_my_custom_event( json ):
+  print( 'recived my event: ' + str( json ) )
+  message = MsgHistory(message=str(json))#['']), user=str(json('message')))
+  db.session.add(message)
+  db.session.commit()
+  socketio.emit( 'my response', jinja2.escape(json), callback=messageRecived)
 
 
 # flask-security
