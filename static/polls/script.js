@@ -45,8 +45,8 @@ $(function(){
                     data: JSON.stringify(data),
                     contentType: 'application/json; charset=utf-8',
                     dataType: "json",
-                    complete: () => {
-                        alert('Poll completed');
+                    complete: (r) => {
+                        alert(r.responseJSON['status']);
                         window.location.replace(window.location.origin);
                     }
                 });

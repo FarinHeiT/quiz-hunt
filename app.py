@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, redirect, url_for
+from flask import Flask, render_template, send_from_directory, redirect, url_for, escape
 from flask_login import LoginManager, current_user, login_required
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -82,12 +82,14 @@ def messageRecived():
   print( 'message was received!!!' )
 
 @socketio.on( 'my event' )
-def handle_my_custom_event( json ):
-  print( 'recived my event: ' + str( json ) )
-  message = MsgHistory(message=str(json))#['']), user=str(json('message')))
-  db.session.add(message)
-  db.session.commit()
-  socketio.emit( 'my response', jinja2.escape(json), callback=messageRecived)
+def handle_my_custom_event( json, methods=['GET', 'POST'] ):
+    print(type(json))
+    print( 'recived my event: ' + str( json ) )
+    message = MsgHistory(message=escape(json['message']), user=current_user.username)
+    db.session.add(message)
+    db.session.commit()
+    json['message'] = str(escape(json['message']))
+    socketio.emit( 'my response', json, callback=messageRecived)
 
 
 # flask-security
