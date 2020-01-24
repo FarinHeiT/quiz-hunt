@@ -84,7 +84,7 @@ def messageRecived():
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
-    message = MsgHistory(message=str(escape(json['message'])), user=current_user.username)
+    message = MsgHistory(message=json['message'], user=current_user.username)
     db.session.add(message)
     db.session.commit()
     json['message'] = str(escape(json['message']))
