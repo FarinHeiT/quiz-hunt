@@ -50,6 +50,7 @@ $(function(){
                         window.location.replace(window.location.origin);
                     }
                 });
+                console.log(data)
 
 
 

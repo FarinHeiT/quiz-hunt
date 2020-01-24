@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, abort
 from flask_login import current_user, login_required
-from models import Poll
+from models import Poll, CompletedPoll
 from .validation import validate_creation, validate_taking
+from app import db
 
 polls = Blueprint('polls', __name__, template_folder='templates', url_prefix='/polls')
 
@@ -25,6 +26,15 @@ def create_poll():
 @polls.route('/<int:poll_id>', methods=('GET', 'POST'))
 @login_required
 def take_poll(poll_id):
+
+    completed_poll = db.session.query(CompletedPoll) \
+        .filter(CompletedPoll.poll_id == poll_id,
+                CompletedPoll.author_id == current_user.id).first()
+
+    # If this user have already completed this poll
+    if completed_poll:
+        return abort(403)
+
     poll = Poll.query.get(poll_id)
     if request.method == 'POST':
         data = request.get_json()

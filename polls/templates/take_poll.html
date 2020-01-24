@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='polls/style.css') }}">
-<script src="{{ url_for('static', filename='polls/script.js ') }}"></script>
+<script src="{{ url_for('static', filename='polls/poll_completion.js ') }}"></script>
     <script>
         let questions = {{ data|tojson  }}
     </script>
