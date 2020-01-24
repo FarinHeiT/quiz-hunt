@@ -79,17 +79,16 @@ def chat():
 
 
 def messageRecived():
-  print( 'message was received!!!' )
+    print('message was received!!!')
 
-@socketio.on( 'my event' )
-def handle_my_custom_event( json, methods=['GET', 'POST'] ):
-    print(type(json))
-    print( 'recived my event: ' + str( json ) )
-    message = MsgHistory(message=escape(json['message']), user=current_user.username)
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    message = MsgHistory(message=str(escape(json['message'])), user=current_user.username)
     db.session.add(message)
     db.session.commit()
     json['message'] = str(escape(json['message']))
-    socketio.emit( 'my response', json, callback=messageRecived)
+    socketio.emit('my response', json, callback=messageRecived)
 
 
 # flask-security
