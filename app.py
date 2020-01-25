@@ -75,6 +75,10 @@ admin.add_view(ModelView(MsgHistory, db.session))
 def chat():
     form = ChatForm()
     messages = MsgHistory.query.all()
+    amount = MsgHistory.query.count()
+    if amount > 99:
+        MsgHistory.query.delete()
+        db.session.commit()
     return render_template('chat.html', messages=messages, form=form)
 
 
