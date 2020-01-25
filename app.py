@@ -1,11 +1,12 @@
-from flask import Flask, render_template, send_from_directory, redirect, url_for, escape
-from flask_login import LoginManager, current_user, login_required
+from flask import Flask, render_template, send_from_directory, redirect, url_for, escape, request
+from flask_login import LoginManager
+from flask_security import current_user, login_required
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm, ChatForm
-from flask_admin import Admin
+from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
-# from flask_security import SQLAlchemySessionUserDatastore, Security
+from flask_security import SQLAlchemyUserDatastore, Security
 from flask_socketio import SocketIO, send, emit
 import jinja2
 
@@ -18,7 +19,6 @@ socketio = SocketIO(app)
 
 # TODO Polls creationg and walkthrough form validation using wtforms
 
-admin = Admin(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -64,10 +64,29 @@ def load_user(user_id):
 # add admin pages here
 from models import *
 
-admin.add_view(ModelView(Poll, db.session))
-admin.add_view(ModelView(Suggestion, db.session))
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(MsgHistory, db.session))
+
+class AdminView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('auth.login', next=request.url))
+
+class HomeAdminView(AdminIndexView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('auth.login', next=request.url))
+
+
+admin = Admin(app, 'Flasapp', url='/', index_view=HomeAdminView(name="home"))
+admin.add_view(AdminView(Poll, db.session))
+admin.add_view(AdminView(Suggestion, db.session))
+admin.add_view(AdminView(User, db.session))
+admin.add_view(AdminView(MsgHistory, db.session))
+
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
+
 
 
 @app.route('/chat', methods=['GET', 'POST'])
@@ -75,6 +94,10 @@ admin.add_view(ModelView(MsgHistory, db.session))
 def chat():
     form = ChatForm()
     messages = MsgHistory.query.all()
+    amount = MsgHistory.query.count()
+    if amount > 99:
+        MsgHistory.query.delete()
+        db.session.commit()
     return render_template('chat.html', messages=messages, form=form)
 
 
@@ -98,7 +121,15 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 @app.route('/')
 def index():
     polls = Poll.query.order_by(Poll.created_date.desc()).all()
-    return render_template('main.html', polls=polls)
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    polls = Poll.query.order_by(Poll.created_date.desc()) #.all()
+    pages = polls.paginate(page=page, per_page=6)
+
+    return render_template('main.html', polls=polls, pages=pages)
 
 
 @app.route('/files/<path:filename>')
@@ -109,6 +140,11 @@ def get_file(filename):
 @app.errorhandler(404)
 def pagenotfound(e):
     return render_template('404.html')
+
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('403.html'), 403
 
 
 if __name__ == '__main__':

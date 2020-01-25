@@ -2,8 +2,8 @@ import bcrypt
 from flask import Blueprint, render_template, url_for, redirect, flash
 from .forms import LoginForm, RegistrationForm
 from flask_login import login_user, logout_user, login_required, current_user
-from models import User
 from app import db
+from models import User
 
 auth = Blueprint('auth', __name__, template_folder='templates', url_prefix='/auth')
 
@@ -56,7 +56,7 @@ def register():
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password.encode(), salt)
 
-        new_user = User(username=username, password=hashed)
+        new_user = User(username=username, password=hashed, active=True)
 
         # add the new user to the database
         db.session.add(new_user)
