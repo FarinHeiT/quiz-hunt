@@ -21,7 +21,7 @@ def login():
 
             if bcrypt.checkpw(form.password.data.encode(),
                               user.password):
-                login_user(user)
+                login_user(user, remember=form.remember_me.data)
                 return redirect(url_for('index'))
 
         flash('Wrong username or password', 'error')

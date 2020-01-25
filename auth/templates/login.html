@@ -45,7 +45,7 @@ login
                             {{ form.password(size=20, class_="form-control") }}
                         </div>
                         <div class="row align-items-center remember">
-                            <input type="checkbox">Remember Me
+                            {{ form.remember_me() }}{{ form.remember_me.label }}
                         </div>
                         <div class="form-group">
                             {{ form.button(type="submit", value="Login", class="btn float-right login_btn") }}
