@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, redirect, url_for, escape
+from flask import Flask, render_template, send_from_directory, redirect, url_for, escape, request
 from flask_login import LoginManager, current_user, login_required
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -102,7 +102,15 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 @app.route('/')
 def index():
     polls = Poll.query.order_by(Poll.created_date.desc()).all()
-    return render_template('main.html', polls=polls)
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    polls = Poll.query.order_by(Poll.created_date.desc()) #.all()
+    pages = polls.paginate(page=page, per_page=6)
+
+    return render_template('main.html', polls=polls, pages=pages)
 
 
 @app.route('/files/<path:filename>')
