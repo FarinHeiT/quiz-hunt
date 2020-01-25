@@ -56,7 +56,7 @@ def register():
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password.encode(), salt)
 
-        new_user = User(username=username, password=hashed)
+        new_user = User(username=username, password=hashed, active=True)
 
         # add the new user to the database
         db.session.add(new_user)

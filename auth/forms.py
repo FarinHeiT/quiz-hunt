@@ -30,6 +30,5 @@ class SuggestForm(FlaskForm):
 
 
 class ChatForm(FlaskForm):
-    username = StringField('username', validators=[DataRequired()])
     text = StringField('text', validators=[DataRequired()])
     button = SubmitField(label='Send')
