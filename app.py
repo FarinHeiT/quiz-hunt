@@ -88,7 +88,6 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
 
-
 @app.route('/chat', methods=['GET', 'POST'])
 @login_required
 def chat():
@@ -145,6 +144,10 @@ def pagenotfound(e):
 @app.errorhandler(403)
 def forbidden(e):
     return render_template('403.html'), 403
+
+@app.errorhandler(500)
+def forbidden(e):
+    return render_template('500.html'), 500
 
 
 if __name__ == '__main__':
