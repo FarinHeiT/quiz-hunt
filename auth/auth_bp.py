@@ -25,7 +25,7 @@ def login():
                 return redirect(url_for('index'))
 
         flash('Wrong username or password', 'error')
-    return render_template('login.html', form=form)
+    return render_template('login_user.html', form=form)
 
 
 @auth.route('/logout')

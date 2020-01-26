@@ -105,6 +105,9 @@ def messageRecived():
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
+    if len(str(json['message'])) >= 237:
+        msg = json['message']
+        json['message'] = msg[:237]
     message = MsgHistory(message=json['message'], user=current_user.username)
     db.session.add(message)
     db.session.commit()
@@ -112,9 +115,6 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     socketio.emit('my response', json, callback=messageRecived)
 
 
-# flask-security
-# user_datascore = SQLAlchemySessionUserDatastore(db.session, User, Role)
-# security = Security(app, user_datascore)
 
 @app.route('/')
 def index():
@@ -137,7 +137,7 @@ def get_file(filename):
 
 @app.errorhandler(404)
 def pagenotfound(e):
-    return render_template('404.html')
+    return render_template('404.html'), 404
 
 
 @app.errorhandler(403)
