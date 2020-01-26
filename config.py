@@ -3,3 +3,4 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///Maindb.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'topsecret'
+    SECURITY_LOGIN_URL = '/auth/login'

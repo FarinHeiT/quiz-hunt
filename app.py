@@ -1,6 +1,6 @@
 from flask import Flask, render_template, send_from_directory, redirect, url_for, escape, request
-from flask_login import LoginManager
-from flask_security import current_user, login_required
+from flask_login import LoginManager, login_required
+from flask_security import current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm, ChatForm
@@ -35,7 +35,6 @@ from models import User, Suggestion
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
-
 
 @app.route('/suggest', methods=['GET', 'POST'])
 @login_required
