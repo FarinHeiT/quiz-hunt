@@ -22,35 +22,36 @@
             border-radius: 10px;
             color: #555;
             margin-bottom: 5px;
+            overflow-wrap: break-word;
         }
     </style>
 {% endblock %}
 {% block body %}
-    <div class="container">
+    <div class="container" style="height: 100%">
         <div class="mycont">
-        <div class="col-sm-8">
-            <div class="no_message">
-                <div class="message_holder">
-                    {% for msg in messages %}
-                        <div class="msg_bbl"><b style="color: #000">
+            <div class="col-sm-8">
+                <div class="no_message">
+                    <div class="message_holder" style="overflow: auto; height: 500px;">
+                            {% for msg in messages %}
+                                <div class="msg_bbl"><b style="color: #000">
 
-                            {{ msg.user }}
-                        </b>{{ msg.message }}</div>
-                    {% endfor %}
-                </div>
+                                {{ msg.user }}
+                            </b>{{ msg.message }}</div>
+                            {% endfor %}
             </div>
         </div>
-        </div>
-        <div class="col-sm-4">
-            <form action="" method="POST">
-                <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
-                <div class="clearfix" style="margin-top: 5px;"></div>
-                <div style="padding-top: 5px;"></div>
-                {{ form.text(class="message form-control", placeholder="Messages") }}
-                <div style="padding-top: 5px;"></div>
-                {{ form.button(class="btn btn-success btn-block") }}
-            </form>
-        </div>
+    </div>
+    </div>
+    <div class="col-sm-4">
+        <form action="" method="POST">
+            <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+            <div class="clearfix" style="margin-top: 5px;"></div>
+            <div style="padding-top: 5px;"></div>
+            {{ form.text(class="message form-control", placeholder="Messages") }}
+            <div style="padding-top: 5px;"></div>
+            {{ form.button(class="btn btn-success btn-block") }}
+        </form>
+    </div>
     </div>
 
 
