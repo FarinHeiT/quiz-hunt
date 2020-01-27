@@ -1,3 +1,4 @@
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -8,7 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='polls/poll_creation.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='polls/style.css ') }}"></link>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='polls/style.css ') }}">
 </head>
 
 
@@ -21,6 +23,26 @@
 
 <div class="container">
 
+    <!-- Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #222222;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Modal title</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Poll description</span>
+                        <input type="text" id='description' class="form-control" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn custom_btn" id='save-settings' type="button">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row"><br><br>
         <div class="col-sm-8 col-sm-offset-2">
             <div class="loader">
@@ -32,7 +54,8 @@
                             <input type="text" id="title-input" placeholder="Enter title here">
                             <img id='add-option' src="{{ url_for('static', filename='polls/images/plus.svg') }}" alt="Add answer option">
                             <img id='add-question' src="{{ url_for('static', filename='polls/images/next-question.svg') }}" alt="Add question">
-                            <img id='create-poll' src="{{ url_for('static', filename='polls/images/create-poll.svg') }}" alt="Add question">
+                            <img id='settings' src="{{ url_for('static', filename='polls/images/settings.svg') }}" alt="Open settings">
+                            <img id='create-poll' src="{{ url_for('static', filename='polls/images/create-poll.svg') }}" alt="Create poll">
                         </h3>
                     </div>
 

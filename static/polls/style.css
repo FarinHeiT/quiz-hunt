@@ -387,8 +387,12 @@ h3 {
     display: flex;
 }
 
-#add-option, #add-question, #create-poll {
+#add-option, #add-question, #create-poll, #settings {
     width: 5%;
     margin-left: 10px;
     cursor: pointer;
+}
+
+div[class='modal-dialog'] {
+    color: #AAAAAA;
 }

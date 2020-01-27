@@ -44,7 +44,19 @@ $(function() {
         }
     });
 
-    
+    // Open settings modal
+    $('#settings').click(() => {
+        $('#settingsModal').modal('show');
+        console.log(data)
+    });
+
+
+    $('#save-settings').click(() => {
+       data['description'] =  $('#description').val();
+       $('#settingsModal').modal('hide');
+    });
+
+
     function addQuestion() {
         data['questions'][$('#title-question').val()] = getAnswerOptions();
     }
@@ -66,9 +78,11 @@ $(function() {
     function validateOptions() {
         let r = true;
         // Check question title
-        r = $('#title-question').val().length > 5;
+        r = $('#title-question').val().length > 5 && $('#title-question').val().length < 100;
         // Check poll title
-        r = $('#title-input').val().length > 5;
+        r = $('#title-input').val().length > 5 && $('#title-input').val().length < 70;
+        // Check poll description
+        r = $('#description').val().length < 70;
 
         // 5 Answer options max, 2 min
         if ($('.answer-option').length > 5) {

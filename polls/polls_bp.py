@@ -15,7 +15,10 @@ def create_poll():
 
         # Data validation
         if validate_creation(data):
-            new_poll = current_user.create_poll(data['title'], data['title'], data['questions'])
+            if 'description' in data:
+                new_poll = current_user.create_poll(data['title'], data['description'], data['questions'])
+            else:
+                new_poll = current_user.create_poll(data['title'], data['title'], data['questions'])
             return {'status': "Success"}
         else:
             return {'status': 'ValidationError'}

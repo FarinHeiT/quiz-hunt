@@ -4,8 +4,13 @@ def validate_creation(data):
     if ('title' not in data.keys() or
             'questions' not in data.keys() or
             len(data['title']) <= 5 or
+            len(data['title']) > 70 or
             len(data['questions']) < 1
     ): return False
+
+    if 'description' in data:
+        if len(data['description']) > 150:
+            return False
 
     for question, answer_options in list(data['questions'].items()):
         if (len(question) <= 5 or
