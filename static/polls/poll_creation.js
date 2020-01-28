@@ -18,7 +18,6 @@ $(function() {
         if (validateOptions() === true) {
             addQuestion();
             clearFields();
-            console.log(data)
         }
     });
 
@@ -47,13 +46,45 @@ $(function() {
     // Open settings modal
     $('#settings').click(() => {
         $('#settingsModal').modal('show');
-        console.log(data)
     });
 
 
     $('#save-settings').click(() => {
        data['description'] =  $('#description').val();
        $('#settingsModal').modal('hide');
+    });
+
+    $('#upload_image').click( () => {
+        const fd = new FormData();
+        const files = $('#file')[0].files[0];
+        fd.append('file',files);
+
+        $.ajax({
+            url: "image_upload",
+            type: "POST",
+            data: fd,
+            contentType: false,
+            processData: false,
+            statusCode: {
+                413: (r) => {
+                    alert('Image size should me less than 5mb');
+                }
+            },
+            complete: (r) => {
+                if (r.responseJSON["status"] === 'Success') {
+                    let elem = `<img width="320" height="180" src='${location.origin}/files/${r.responseJSON["filename"]}'>`
+                    if ($('.modal-body > img').length === 0) {
+                        $('.modal-body').append(elem)
+                    } else {
+                        $('.modal-body > img').attr('src', `${location.origin}/files/${r.responseJSON["filename"]}`)
+                    }
+                    data['filename'] = r.responseJSON["filename"];
+                    $('#upload_image').attr('disabled', '')
+                    // // Wait 5 sec before loading another image
+                    // setTimeout(() => $('#upload_image').removeAttr('disabled'), 5000)
+                }
+            }
+        });
     });
 
 

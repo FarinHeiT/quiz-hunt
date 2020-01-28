@@ -1,8 +1,12 @@
+import os
+import time
 from flask import Blueprint, render_template, request, redirect, url_for, abort
 from flask_login import current_user, login_required
 from models import Poll, CompletedPoll
 from .validation import validate_creation, validate_taking
+from werkzeug.utils import secure_filename
 from app import db
+from config import Config
 
 polls = Blueprint('polls', __name__, template_folder='templates', url_prefix='/polls')
 
@@ -15,10 +19,6 @@ def create_poll():
 
         # Data validation
         if validate_creation(data):
-            if 'description' in data:
-                new_poll = current_user.create_poll(data['title'], data['description'], data['questions'])
-            else:
-                new_poll = current_user.create_poll(data['title'], data['title'], data['questions'])
             return {'status': "Success"}
         else:
             return {'status': 'ValidationError'}
@@ -29,7 +29,6 @@ def create_poll():
 @polls.route('/<int:poll_id>', methods=('GET', 'POST'))
 @login_required
 def take_poll(poll_id):
-
     completed_poll = db.session.query(CompletedPoll) \
         .filter(CompletedPoll.poll_id == poll_id,
                 CompletedPoll.author_id == current_user.id).first()
@@ -56,3 +55,25 @@ def view_poll(poll_id):
     poll = Poll.query.get(poll_id)
 
     return render_template('view_poll.html', data=poll.aggregate_results())
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@polls.route('/image_upload', methods=['POST', ])
+def image_upload():
+    if 'file' not in request.files:
+        return {'status': 'A file must be selected'}
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return {'status': 'A file must be selected'}
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(current_user.username + str(time.time()).split('.')[1])
+        file.save(os.path.join(Config.UPLOAD_FOLDER, filename))
+        return {'status': 'Success', 'filename': filename}

@@ -24,16 +24,16 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
     active = db.Column(db.Boolean())
 
-    def create_poll(self, title, description, data):
+    def create_poll(self, questions, title, description='', filename='poll.jpg'):
         """ Creates new poll with given Q, Qno and answer options {'q1': (1, [a, b])} """
 
         new_poll = Poll(author_id=self.id,
                         title=title,
-                        image_name='poll.jpg',
+                        image_name=filename,
                         description=description)
 
         # q: question, options: answer options
-        for q, options in data.items():
+        for q, options in questions.items():
             answer_options = options
 
             # Get newly created question

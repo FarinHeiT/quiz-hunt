@@ -35,6 +35,10 @@
                         <span class="input-group-addon" id="basic-addon1">Poll description</span>
                         <input type="text" id='description' class="form-control" aria-describedby="basic-addon1">
                     </div>
+                    <form method="post" action="{{ url_for('polls.image_upload') }}" enctype=multipart/form-data>
+                        <input type='file' name='file' id='file'>
+                        <input type="button" id='upload_image' value='Upload' class="btn btn-secondary">
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn custom_btn" id='save-settings' type="button">Save</button>
