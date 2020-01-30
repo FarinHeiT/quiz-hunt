@@ -1,3 +1,6 @@
+from models import Poll
+
+
 def validate_creation(data):
     """ Checks the structure of JSON data from front-end """
 
@@ -21,6 +24,7 @@ def validate_creation(data):
         for answer_option in answer_options:
             if len(answer_option) <= 2:
                 return False
+
     return True
 
 

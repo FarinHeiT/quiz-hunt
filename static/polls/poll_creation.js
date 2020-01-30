@@ -25,7 +25,6 @@ $(function() {
     $('#create-poll').click(() => {
         if (validateOptions() === true) {
             addQuestion();
-            clearFields();
             data['title'] = $('#title-input').val();
 
             $.ajax({
@@ -35,8 +34,15 @@ $(function() {
                 contentType: 'application/json; charset=utf-8',
                 dataType: "json",
                 complete: (r) => {
-                    alert(r.responseJSON['status'])
-                    window.location.replace(window.location.origin);
+                    if (r.responseJSON["status"] === 'Success') {
+                        window.location.replace(window.location.origin);
+                    } else if (r.responseJSON["status"] === 'TitleAlreadyExists') {
+                        alert('Poll with given name already exists...')
+                    } else if (r.responseJSON['status'] === "ValidationError") {
+                        alert('There is an validation error - please check your input.')
+                    }
+
+
                 }
             });
 

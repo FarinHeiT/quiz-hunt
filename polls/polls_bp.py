@@ -19,8 +19,13 @@ def create_poll():
 
         # Data validation
         if validate_creation(data):
-            new_poll = current_user.create_poll(**data)
-            return {'status': "Success"}
+            # If there is no poll with given name
+            poll = Poll.query.filter(Poll.title == data['title']).first()
+            if not poll:
+                new_poll = current_user.create_poll(**data)
+                return {'status': "Success"}
+            else:
+                return {'status': "TitleAlreadyExists"}
         else:
             return {'status': 'ValidationError'}
 
