@@ -14,7 +14,6 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
     <style>
         div.msg_bbl {
             background-color: #ddd;
@@ -24,34 +23,34 @@
             margin-bottom: 5px;
             overflow-wrap: break-word;
         }
+
+        .message {
+            flex-basis: 970%
+        }
     </style>
 {% endblock %}
 {% block body %}
-    <div class="container" style="height: 100%">
+    <div class="container" style="height: 90%">
         <div class="mycont">
-            <div class="col-sm-8">
+            <div class="col-sm-12 m-4">
                 <div class="no_message">
                     <div class="message_holder" style="overflow: auto; height: 500px;">
-                            {% for msg in messages %}
-                                <div class="msg_bbl"><b style="color: #000">
+                        {% for msg in messages %}
+                            <div class="msg_bbl"><b style="color: #000">
 
                                 {{ msg.user }}
                             </b>{{ msg.message }}</div>
-                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <form action="" method="POST">
+                    <div class="d-flex">
+                        {{ form.text(class="message form-control w-100", placeholder="Messages") }}
+                        {{ form.button(class="btn btn-success btn-block") }}
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-    </div>
-    <div class="col-sm-4">
-        <form action="" method="POST">
-            <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
-            <div class="clearfix" style="margin-top: 5px;"></div>
-            <div style="padding-top: 5px;"></div>
-            {{ form.text(class="message form-control", placeholder="Messages") }}
-            <div style="padding-top: 5px;"></div>
-            {{ form.button(class="btn btn-success btn-block") }}
-        </form>
-    </div>
     </div>
 
 
@@ -59,12 +58,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port)
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        scrollChatBottom();
         // broadcast a message
         socket.on('connect', function () {
             var form = $('form').on('submit', function (e) {
                 e.preventDefault()
-                let user_input = $('input.message').val()
+                let user_input = $('input.message').val();
                 socket.emit('my event', {
                     'message': user_input,
                     'user': '{{ current_user.username }}'
@@ -76,12 +76,17 @@
 
         // capture message
         socket.on('my response', function (msg) {
-            console.log(msg)
             if (typeof msg !== 'undefined') {
                 $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user + '</b> ' + msg.message + '</div>')
+                scrollChatBottom();
             }
         })
-    </script>
 
+    function scrollChatBottom() {
+        $('.message_holder').stop().animate ({
+            scrollTop: $('.message_holder')[0].scrollHeight
+        });
+    }
+    </script>
 
 {% endblock %}
