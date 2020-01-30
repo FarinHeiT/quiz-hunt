@@ -33,3 +33,8 @@ class SuggestForm(FlaskForm):
 class ChatForm(FlaskForm):
     text = StringField('text', validators=[DataRequired()])
     button = SubmitField(label='Send')
+
+
+class SearchForm(FlaskForm):
+    search = StringField('search', validators=[DataRequired()])
+    button = SubmitField(label='Submit')

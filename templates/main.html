@@ -27,6 +27,12 @@
     </a>
 
     <div>
+    <form method="GET">
+      <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="q" value="{{ request.args.get('q', '') }}">
+      <button class="btn custom_btn" type="submit">Search</button>
+    </form>
+    </div>
+    <div>
         <a href="{{ url_for('about_us') }}">
         <button class="btn custom_btn" type="button">About</button>
         </a>

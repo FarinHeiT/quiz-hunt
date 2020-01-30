@@ -3,7 +3,7 @@ from flask_login import LoginManager, login_required
 from flask_security import current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from auth.forms import SuggestForm, ChatForm
+from auth.forms import SuggestForm, ChatForm, SearchForm
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_security import SQLAlchemyUserDatastore, Security
@@ -118,13 +118,21 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 @app.route('/')
 def index():
-    polls = Poll.query.order_by(Poll.created_date.desc()).all()
+
+    form = SearchForm()
     page = request.args.get('page')
     if page and page.isdigit():
         page = int(page)
     else:
         page = 1
-    polls = Poll.query.order_by(Poll.created_date.desc()) #.all()
+    q = request.args.get('q')
+    if q:
+        polls = Poll.query.filter(Poll.title.contains(q) | Poll.description.contains(q))
+    else:
+        polls = Poll.query.order_by(Poll.created_date.desc())
+
+
+
     pages = polls.paginate(page=page, per_page=6)
 
     return render_template('main.html', polls=polls, pages=pages)
