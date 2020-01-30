@@ -7,8 +7,8 @@ from auth.forms import SuggestForm, ChatForm
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_security import SQLAlchemyUserDatastore, Security
-from flask_socketio import SocketIO, send, emit
-import jinja2
+from flask_socketio import SocketIO
+import urllib.parse
 
 from config import Config
 
@@ -105,9 +105,9 @@ def messageRecived():
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
-    if len(str(json['message'])) >= 237:
-        msg = json['message']
-        json['message'] = msg[:237]
+    # URI Decoding and Length restriction
+    json['message'] = urllib.parse.unquote(json['message'])[:237]
+
     message = MsgHistory(message=json['message'], user=current_user.username)
     db.session.add(message)
     db.session.commit()
