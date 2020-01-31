@@ -1,3 +1,5 @@
+import bcrypt
+import click
 from flask import Flask, render_template, send_from_directory, redirect, url_for, escape, request
 from flask_login import LoginManager, login_required
 from flask_security import current_user
@@ -9,16 +11,12 @@ from flask_admin.contrib.sqla import ModelView
 from flask_security import SQLAlchemyUserDatastore, Security
 from flask_socketio import SocketIO
 import urllib.parse
-
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 socketio = SocketIO(app)
-
-# TODO Polls creationg and walkthrough form validation using wtforms
-
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -35,6 +33,7 @@ from models import User, Suggestion
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
+
 
 @app.route('/suggest', methods=['GET', 'POST'])
 @login_required
@@ -67,12 +66,15 @@ from models import *
 class AdminView(ModelView):
     def is_accessible(self):
         return current_user.has_role('admin')
+
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('auth.login', next=request.url))
+
 
 class HomeAdminView(AdminIndexView):
     def is_accessible(self):
         return current_user.has_role('admin')
+
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('auth.login', next=request.url))
 
@@ -115,10 +117,8 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     socketio.emit('my response', json, callback=messageRecived)
 
 
-
 @app.route('/')
 def index():
-
     form = SearchForm()
     page = request.args.get('page')
     if page and page.isdigit():
@@ -130,8 +130,6 @@ def index():
         polls = Poll.query.filter(Poll.title.contains(q) | Poll.description.contains(q))
     else:
         polls = Poll.query.order_by(Poll.created_date.desc())
-
-
 
     pages = polls.paginate(page=page, per_page=6)
 
@@ -152,6 +150,7 @@ def pagenotfound(e):
 def forbidden(e):
     return render_template('403.html'), 403
 
+
 @app.errorhandler(500)
 def forbidden(e):
     return render_template('500.html'), 500
@@ -159,3 +158,30 @@ def forbidden(e):
 
 if __name__ == '__main__':
     socketio.run(app)
+
+
+# CLI Helper methods
+@app.cli.command('create-user')
+@click.option('-u', '--username', required=True)
+@click.option('-p', '--password', required=True)
+@click.option('-a', '--admin', default=0)
+@click.option('--active', default=1)
+def create_user(username, password, admin, active):
+    try:
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password.encode(), salt)
+
+        new_user = User(username=username, password=hashed, active=active)
+
+        if admin:
+            admin_role = Role.query.filter(Role.name == 'admin').first()
+            user_datastore.add_role_to_user(new_user, admin_role)
+
+        db.session.add(new_user)
+        db.session.commit()
+        print(f'Created user: {username}')
+    except Exception as e:
+        print('Something went wrong: ', e)
+
+
+app.cli.add_command(create_user)
