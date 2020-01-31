@@ -77,8 +77,8 @@
                                 <span class="tourday hot">Questions: {{ poll.questions.count() }}</span>
                             </div>
                             <figcaption>
-                                <h3 class="entry-title">
-                                    <a href="{{ url_for('polls.take_poll', poll_id=poll.id) }}">{{ poll.title }}</a></h3>
+                                <h3 class="entry-title" style="word-wrap: break-word;">
+                                    <a href="{{ url_for('polls.take_poll', poll_id=poll.id) }}">{{ poll.title|truncate(63, True) }}</a></h3>
                                 <span class="description">{{ poll.description }}</span>
                       </span>
                             </figcaption>
