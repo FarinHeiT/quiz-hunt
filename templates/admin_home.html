@@ -1,42 +1,199 @@
 {% extends 'admin/master.html' %}
 
 {% block head %}
-<style>
-    h1 {
-    	border-radius: 50;
-    	border: 3px black;
-    	padding: 20px;
-    	background: rgb(185, 247, 59);
-    	background-clip: padding-box;
-    }
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/BoiseDigital/pen/Cbxst?q=statistics&order=popularity&depth=everything&show_forks=false" />
 
-    h2 {
-    	border-radius: 50;
-    	border: 3px black;
-    	padding: 10px;
-    	background: rgb(55, 174, 243);
-    	background-clip: padding-box;
-    }
-    h2.special {
-    	border-radius: 50;
-    	border: 3px black;
-    	padding: 20px;
-    	background: rgb(255, 58, 58);
-    	background-clip: padding-box;
-    }
-    html,body {
-    	background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
-    	background-size: cover;
-    	background-repeat: no-repeat;
-    	height: 100%;
-    	font-family: 'Numans', sans-serif;
-    }
+<style>
+    background-color:#f5f5f5;
+}
+
+.statContainer {
+  margin:auto;
+  width:960px;
+
+}
+
+.statRedirect {
+  color:#06f;
+  font-family:'segoe ui light',arial;
+  font-size:14px;
+  display: inline-block;
+  overflow: hidden;
+
+  vertical-align: top;
+
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  -ms-perspective: 600px;
+  perspective: 600px;
+
+  -webkit-perspective-origin: 50% 50%;
+  -moz-perspective-origin: 50% 50%;
+  -ms-perspective-origin: 50% 50%;
+  perspective-origin: 50% 50%;
+}
+
+.statRedirect span {
+  display: block;
+  position: relative;
+  padding: 2px 8px;
+
+  -webkit-transition: all 400ms ease;
+  -moz-transition: all 400ms ease;
+  -ms-transition: all 400ms ease;
+  transition: all 400ms ease;
+
+  -webkit-transform-origin: 50% 0%;
+  -moz-transform-origin: 50% 0%;
+  -ms-transform-origin: 50% 0%;
+  transform-origin: 50% 0%;
+
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.statBubbleContainer:hover > .statRedirect span {
+  background: #00929c;
+
+  -webkit-transform: translate3d( 0px, 0px, -30px ) rotateX( 90deg );
+  -moz-transform: translate3d( 0px, 0px, -30px ) rotateX( 90deg );
+  -ms-transform: translate3d( 0px, 0px, -30px ) rotateX( 90deg );
+  transform: translate3d( 0px, 0px, -30px ) rotateX( 90deg );
+}
+
+.statRedirect span:after {
+  content: attr(data-title);
+
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 2px 8px;
+
+  color: #fff;
+  background: #0e76bc;
+
+  -webkit-transform-origin: 50% 0%;
+  -moz-transform-origin: 50% 0%;
+  -ms-transform-origin: 50% 0%;
+  transform-origin: 50% 0%;
+
+  -webkit-transform: translate3d( 0px, 105%, 0px ) rotateX( -90deg );
+  -moz-transform: translate3d( 0px, 105%, 0px ) rotateX( -90deg );
+  -ms-transform: translate3d( 0px, 105%, 0px ) rotateX( -90deg );
+  transform: translate3d( 0px, 105%, 0px ) rotateX( -90deg );
+}
+
+.statBubbleContainer:hover > .statRedirect {
+  text-decoration:none;
+}
+
+.underline {
+  text-decoration:underline;
+}
+
+.statBubbleContainer {
+    width:163px;
+    height:250px;
+    position:relative;
+    cursor:pointer;
+    text-align:center;
+    margin:auto;
+    margin-top:50px;
+    display:inline-block;
+    margin-left:36px;
+    margin-right:36px;
+}
+
+.nounderline {
+  text-decoration:none;
+}
+
+.statBubbleContainer h3 {
+  font-family:'segoe ui bold',arial;
+  font-size:14px;
+  color:#828282;
+  -webkit-transition:all 0.3s ease-in-out;
+  -ms-transition:all 0.3s ease-in-out;
+  -moz-transition:all 0.3s ease-in-out;
+  -o-transition:all 0.3s ease-in-out;
+  -apple-transition:all 0.3s ease-in-out;
+  transition:all 0.3s ease-in-out;
+}
+
+.statBubbleContainer:hover > h3 {
+  color:#0e76bc;  
+}
+
+.statBubbleContainer:hover > .statBubble {
+  border:6px solid #0e76bc;
+  background-position:center -140px;
+}
+
+.statBubbleContainer:hover .statNum {
+  color:#2b2b2b;
+}
+
+.websitesLaunched {
+  background-image:url('http://dizin.x10.bz/codepen/Cbxst/screen.png');  
+}
+
+.teamSize {
+  background-image:url('http://dizin.x10.bz/codepen/Cbxst/person.png');
+}
+
+.topSEORank {
+  background-image:url('http://dizin.x10.bz/codepen/Cbxst/search.png');
+}
+
+.facebookLikes {
+  background-image:url('http://dizin.x10.bz/codepen/Cbxst/likes.png');
+}
+
+.statBubble {
+  margin:auto;
+  width:150px;
+  height:150px;
+  border-radius:100%;
+  border:6px solid #ddd;
+  background-repeat:no-repeat;
+  background-position:center 25px;
+  position:relative;
+  text-align:center;
+  -webkit-transition:all 0.3s ease-in-out;
+  -ms-transition:all 0.3s ease-in-out;
+  -moz-transition:all 0.3s ease-in-out;
+  -o-transition:all 0.3s ease-in-out;
+  -apple-transition:all 0.3s ease-in-out;
+  transition:all 0.3s ease-in-out;
+}
+
+.statNum {
+  position:absolute;
+  font-family:'segoe ui light',arial;
+  left:0;
+  right:0;
+  margin:auto;
+  line-height:150px;
+  vertical-align:middle;
+  font-size:40px;
+  color:#828282;
+   -webkit-transition:all 0.3s ease-in-out;
+  -ms-transition:all 0.3s ease-in-out;
+  -moz-transition:all 0.3s ease-in-out;
+  -o-transition:all 0.3s ease-in-out;
+  -apple-transition:all 0.3s ease-in-out;
+  transition:all 0.3s ease-in-out;
 
 </style>
 {% endblock %}
 
 {% block body %}
-<div>
 <h1 align="center">{% if not current_user.username == 'ilya8306' %}
     hello admin {{ current_user.username }}
 {% endif %}
@@ -45,12 +202,59 @@
     {% endif %}
 </h1>
 </br>
-<h2 align="center" class="special">here is statistics</h2>
-</br>
-<h2 align="center">users: {{ users }}</h2>
-<h2 align="center">polls: {{ polls }}</h2>
-<h2 align="center">suggestions: {{ suggest }}</h2>
-<h2 align="center">messages: {{ msghistory }}</h2>
-<h2 align="center">completed polls: {{ completedpolls }}</h2>
+<div class="statContainer">
+  
+<a class="nounderline" href="/user/" title="Users">
+<div class="statBubbleContainer">
+<div class="statBubble websitesLaunched">
+  <div class="statNum">
+  {{ users }}
+  </div>
 </div>
+  <h3>Users</h3>
+  <div class="statRedirect"><span data-title="Users →">Users →</span> </div>
+</div>
+</a>
+
+
+<a class="nounderline" href="/poll/" title="Polls">
+<div class="statBubbleContainer">
+<div class="statBubble teamSize">
+  <div class="statNum">
+  {{ polls }}
+  </div>
+</div>
+  <h3>Polls</h3>
+  <div class="statRedirect"><span data-title="Polls →">Polls →</span> </div>
+</div>
+</a>
+  
+  <a class="nounderline" href="/msghistory/" title="Messages">
+<div class="statBubbleContainer">
+<div class="statBubble topSEORank">
+  <div class="statNum">
+{{ msghistory }}
+  </div>
+</div>
+  <h3>Messages</h3>
+  <div class="statRedirect"><span data-title="Messages →">Messages →</span> </div>
+</div>
+</a>
+  
+  <a class="nounderline" target="_blank" href="/suggestion/" title="Suggestions">
+<div class="statBubbleContainer">
+<div class="statBubble facebookLikes">
+  <div class="statNum">
+  {{ suggest }}
+  </div>
+</div>
+  <h3>Suggestions</h3>
+  <div class="statRedirect"><span data-title="Suggestions →">Suggestions →</span> </div>
+</div>
+</a>
+
+
+</div>
+
+
 {% endblock %}

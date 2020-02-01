@@ -87,6 +87,8 @@ class HomeAdminView(AdminIndexView):
                            completedpolls=CompletedPoll.query.count())
 
 
+
+
 ''' to make a admin'''
 #from app import db
 #from app import user_datastore
