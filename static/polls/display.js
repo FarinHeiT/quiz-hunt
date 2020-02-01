@@ -1,15 +1,14 @@
 $(function() {
-
-
     $.each(data, (i, data) => {
         let [question, answer_options, counts] = data;
+
         $('#results').append(document.querySelector('template').content.cloneNode(true));
         $('canvas').last().attr('id', 'question' + i);
         $('h5').last().html(question);
         let ctx = document.getElementById('question' + i).getContext('2d');
 
         let myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'horizontalBar',
             data: {
                 labels: answer_options,
                 datasets: [{
@@ -39,6 +38,14 @@ $(function() {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            precision: 0,
+                            callback: function (value) {
+                                return value.toLocaleString('de-DE', {style:'percent'});
+                            }
                         }
                     }]
                 },

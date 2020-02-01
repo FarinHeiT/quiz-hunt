@@ -1,8 +1,9 @@
 import bcrypt
 import click
+import urllib.parse
 from flask import Flask, render_template, send_from_directory, redirect, url_for, escape, request
 from flask_login import LoginManager, login_required
-from flask_security import current_user, roles_required, roles_accepted
+from flask_security import current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm, ChatForm, SearchForm
@@ -10,10 +11,7 @@ from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_security import SQLAlchemyUserDatastore, Security
 from flask_socketio import SocketIO
-import urllib.parse
 from config import Config
-from flask_admin.contrib import rediscli
-from redis import Redis
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -117,9 +115,6 @@ class UserAdminView(ModelView):
     column_filters = ('id','username', 'active', 'polls', 'completed_polls', 'roles')
 
 
-
-
-
 class HomeAdminView(AdminIndexView):
     def is_accessible(self):
         return current_user.has_role('admin')
@@ -134,23 +129,11 @@ class HomeAdminView(AdminIndexView):
                            completedpolls=CompletedPoll.query.count())
 
 
-
-
-''' to make a admin'''
-#from app import db
-#from app import user_datastore
-#from models import *
-#mq = User.query.all()
-#user = mq[user number that you want to make admin]
-#role = Role.query.first()
-#user_datastore.add_role_to_user(user, role)
-#b.session.commit()
-
-admin = Admin(app, 'Quiz-Hunt', url='/', index_view=HomeAdminView())
-admin.add_view(PollAdminView(Poll, db.session))
-admin.add_view(SuggestionsAdminView(Suggestion, db.session))
-admin.add_view(UserAdminView(User, db.session))
-admin.add_view(MsgAdminView(MsgHistory, db.session))
+admin = Admin(app, 'Flasapp', url='/', index_view=HomeAdminView(name="home"))
+admin.add_view(AdminView(Poll, db.session))
+admin.add_view(AdminView(Suggestion, db.session))
+admin.add_view(AdminView(User, db.session))
+admin.add_view(AdminView(MsgHistory, db.session))
 admin.add_view(AdminView(CompletedPoll, db.session))
 #admin.add_view(rediscli.RedisCli(Redis()))
 

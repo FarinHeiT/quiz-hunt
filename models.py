@@ -9,6 +9,7 @@ roles_users = db.Table('roles_users',
                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
                        )
 
+
 class MsgHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column('message', db.String(500))
@@ -104,22 +105,33 @@ class Poll(db.Model):
         completed_polls = CompletedPoll.query.filter(CompletedPoll.poll_id == self.id).all()
         questions = [q.text for q in self.questions.all()]
         answer_options = []
-        counts = []
-        for question in self.questions:
-            answer_options.append([answer_option.text
-                                   for answer_option in question.answer_options])
 
         for question in self.questions.all():
+
             r = db.session.query(AnsweredQuestion.answer_id, func.count(AnsweredQuestion.answer_id)) \
                 .group_by(AnsweredQuestion.answer_id) \
                 .filter(AnsweredQuestion.question.has(Question.poll_id == self.id),
                         AnsweredQuestion.question_id == question.id).all()
-            counts.append([data[1] for data in r])
 
-        return list(zip(questions, answer_options, counts))
+            temp_options = {answer_option.id: [answer_option.text, 0]
+                            for answer_option in question.answer_options}
 
-    def __repr__(self):
-        return f'Poll: {self.title}'
+            for data in r:
+                temp_options[data[0]][1] = data[1]
+
+            answer_options.append(temp_options)
+
+        options_text, options_count = [], []
+        for question_options in answer_options:
+            options_text.append(list(map(lambda items: items[1][0], question_options.items())))
+            options_count.append(list(map(lambda items: items[1][1], question_options.items())))
+
+
+        return list(zip(questions, options_text, options_count))
+
+
+def __repr__(self):
+    return f'Poll: {self.title}'
 
 
 class Question(db.Model):
