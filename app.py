@@ -71,6 +71,53 @@ class AdminView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('auth.login', next=request.url))
 
+    column_searchable_list = ['id']
+
+
+class PollAdminView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('auth.login', next=request.url))
+
+    column_searchable_list = ['title', 'id']
+    column_filters = ('title', 'created_date', 'author_id', 'description', 'id')
+
+class MsgAdminView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('auth.login', next=request.url))
+
+    column_searchable_list = ['id', 'user', 'message']
+    column_filters = ('id', 'user', 'message', 'id')
+
+
+class SuggestionsAdminView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('auth.login', next=request.url))
+
+    column_searchable_list = ['id', 'author_id', 'topic']
+    column_filters = ('id', 'author_id', 'topic', 'id')
+
+
+class UserAdminView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('auth.login', next=request.url))
+
+    column_searchable_list = ['username', 'id']
+    column_filters = ('id','username', 'active', 'polls', 'completed_polls', 'roles')
+
+
+
 
 
 class HomeAdminView(AdminIndexView):
@@ -100,10 +147,10 @@ class HomeAdminView(AdminIndexView):
 #b.session.commit()
 
 admin = Admin(app, 'Quiz-Hunt', url='/', index_view=HomeAdminView())
-admin.add_view(AdminView(Poll, db.session))
-admin.add_view(AdminView(Suggestion, db.session))
-admin.add_view(AdminView(User, db.session))
-admin.add_view(AdminView(MsgHistory, db.session))
+admin.add_view(PollAdminView(Poll, db.session))
+admin.add_view(SuggestionsAdminView(Suggestion, db.session))
+admin.add_view(UserAdminView(User, db.session))
+admin.add_view(MsgAdminView(MsgHistory, db.session))
 admin.add_view(AdminView(CompletedPoll, db.session))
 #admin.add_view(rediscli.RedisCli(Redis()))
 
