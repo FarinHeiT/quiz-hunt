@@ -2,16 +2,18 @@ import bcrypt
 import click
 from flask import Flask, render_template, send_from_directory, redirect, url_for, escape, request
 from flask_login import LoginManager, login_required
-from flask_security import current_user
+from flask_security import current_user, roles_required, roles_accepted
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from auth.forms import SuggestForm, ChatForm, SearchForm
-from flask_admin import Admin, AdminIndexView
+from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_security import SQLAlchemyUserDatastore, Security
 from flask_socketio import SocketIO
 import urllib.parse
 from config import Config
+from flask_admin.contrib import rediscli
+from redis import Redis
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -62,13 +64,13 @@ def load_user(user_id):
 # add admin pages here
 from models import *
 
-
 class AdminView(ModelView):
     def is_accessible(self):
         return current_user.has_role('admin')
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('auth.login', next=request.url))
+
 
 
 class HomeAdminView(AdminIndexView):
@@ -78,12 +80,30 @@ class HomeAdminView(AdminIndexView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('auth.login', next=request.url))
 
+    @expose('/')
+    def index(self):
+        return self.render(name="home", template="admin_home.html", url="/admin", msghistory=MsgHistory.query.count(),
+                           users=User.query.count(), polls=Poll.query.count(), suggest=Suggestion.query.count(),
+                           completedpolls=CompletedPoll.query.count())
 
-admin = Admin(app, 'Flasapp', url='/', index_view=HomeAdminView(name="home"))
+
+''' to make a admin'''
+#from app import db
+#from app import user_datastore
+#from models import *
+#mq = User.query.all()
+#user = mq[user number that you want to make admin]
+#role = Role.query.first()
+#user_datastore.add_role_to_user(user, role)
+#b.session.commit()
+
+admin = Admin(app, 'Quiz-Hunt', url='/', index_view=HomeAdminView())
 admin.add_view(AdminView(Poll, db.session))
 admin.add_view(AdminView(Suggestion, db.session))
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(MsgHistory, db.session))
+admin.add_view(AdminView(CompletedPoll, db.session))
+#admin.add_view(rediscli.RedisCli(Redis()))
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
@@ -120,12 +140,12 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 @app.route('/')
 def index():
     form = SearchForm()
+    q = request.args.get('q')
     page = request.args.get('page')
     if page and page.isdigit():
         page = int(page)
     else:
         page = 1
-    q = request.args.get('q')
     if q:
         polls = Poll.query.filter(Poll.title.contains(q) | Poll.description.contains(q))
     else:

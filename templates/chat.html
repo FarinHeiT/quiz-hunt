@@ -77,7 +77,7 @@
         // capture message
         socket.on('my response', function (msg) {
             if (typeof msg !== 'undefined') {
-                $('div.message_holder').append('<div class="msg_bbl"><b style="{% if not current_user.has_role('admin') %}color: #000{% endif %}{% if current_user.has_role('admin') %} color: yellow {% endif %}">' + msg.user + '</b> ' + msg.message + '</div>')
+                $('div.message_holder').append('<div class="msg_bbl"><b style="{% if not current_user.has_role('admin') %}color: #000{% endif %}{% if current_user.has_role('admin') %} color: rgb(158, 209, 19) {% endif %}">' + msg.user + '</b> ' + msg.message + '</div>')
                 scrollChatBottom();
             }
         })

@@ -1,0 +1,56 @@
+{% extends 'admin/master.html' %}
+
+{% block head %}
+<style>
+    h1 {
+    	border-radius: 50;
+    	border: 3px black;
+    	padding: 20px;
+    	background: rgb(185, 247, 59);
+    	background-clip: padding-box;
+    }
+
+    h2 {
+    	border-radius: 50;
+    	border: 3px black;
+    	padding: 10px;
+    	background: rgb(55, 174, 243);
+    	background-clip: padding-box;
+    }
+    h2.special {
+    	border-radius: 50;
+    	border: 3px black;
+    	padding: 20px;
+    	background: rgb(255, 58, 58);
+    	background-clip: padding-box;
+    }
+    html,body {
+    	background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+    	background-size: cover;
+    	background-repeat: no-repeat;
+    	height: 100%;
+    	font-family: 'Numans', sans-serif;
+    }
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div>
+<h1 align="center">{% if not current_user.username == 'ilya8306' %}
+    hello admin {{ current_user.username }}
+{% endif %}
+    {% if current_user.username == 'ilya8306' %}
+    welcome sir
+    {% endif %}
+</h1>
+</br>
+<h2 align="center" class="special">here is statistics</h2>
+</br>
+<h2 align="center">users: {{ users }}</h2>
+<h2 align="center">polls: {{ polls }}</h2>
+<h2 align="center">suggestions: {{ suggest }}</h2>
+<h2 align="center">messages: {{ msghistory }}</h2>
+<h2 align="center">completed polls: {{ completedpolls }}</h2>
+</div>
+{% endblock %}

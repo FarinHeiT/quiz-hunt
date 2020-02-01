@@ -154,6 +154,7 @@ figcaption h3 a {
 .tourcard:hover figure figcaption .tourprice {
   display: block;
   opacity: 1;
+
 }
 
 .custom_btn {

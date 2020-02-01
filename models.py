@@ -18,7 +18,7 @@ class MsgHistory(db.Model):
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True)
-    password = db.Column(db.String(30))
+    password = db.Column(db.String(200))
     polls = db.relationship('Poll', backref='author', lazy=True)
     completed_polls = db.relationship('CompletedPoll', backref='completed_by', lazy=True)
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
@@ -175,7 +175,7 @@ class AnsweredQuestion(db.Model):
 class Suggestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(1000))
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author_id = db.Column(db.Integer)
     topic = db.Column(db.String(200))
 
     def __repr__(self):
