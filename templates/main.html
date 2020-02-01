@@ -27,91 +27,105 @@
     </a>
 
     <div>
-    <form method="GET">
-        <div class="input-group mb-3">
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="q" value="{{ request.args.get('q', '') }}">
-            <div class="input-group-append">
-                <button class="btn custom_btn" type="submit">Search</button>
+        <form method="GET">
+            <div class="input-group mb-3">
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="q"
+                       value="{{ request.args.get('q', '') }}">
+                <div class="input-group-append">
+                    <button class="btn custom_btn" type="submit">Search</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
     <div>
         <a href="{{ url_for('about_us') }}">
-        <button class="btn custom_btn" type="button">About</button>
+            <button class="btn custom_btn" type="button">About</button>
         </a>
     </div>
-{% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated %}
     <a href="{{ url_for('polls.create_poll') }}">
         <button class="btn custom_btn" type="button">Create</button>
     </a>
     <a href="{{ url_for('chat') }}">
-                <button class="btn custom_btn" type="button">Chat</button>
-            </a>
+        <button class="btn custom_btn" type="button">Chat</button>
+    </a>
     {% endif %}
-        {% if not current_user.is_authenticated %}
-            <a href="{{ url_for('auth.login') }}">
-                <button class="btn custom_btn" type="button">Login</button>
-            </a>
-            <div>
-                <a href="{{ url_for('auth.register') }}">
-                    <button class="btn custom_btn" type="button">Register</button>
+    {% if not current_user.is_authenticated %}
+    <a href="{{ url_for('auth.login') }}">
+        <button class="btn custom_btn" type="button">Login</button>
+    </a>
+    <div>
+        <a href="{{ url_for('auth.register') }}">
+            <button class="btn custom_btn" type="button">Register</button>
+        </a>
+    </div>
+    {% else %}
+    <a href="{{ url_for('auth.logout') }}">
+        <button class="btn custom_btn" type="button">Log Out</button>
+    </a>
+    <div style="color: white;">
+        <p>{{ current_user }}</p>
+        {% endif %}
+    </div>
+</div>
+
+</div>
+
+</div>
+<div class="d-flex flex-wrap justify-content-between">
+
+    {% for poll in pages.items %}
+    <div class="tourcard">
+        <figure>
+            <div class="tourpic">
+                <img width="320" height="180" src="{{ url_for('get_file', filename=poll.image_name) }}">
+                <span class="tourcat">{{ poll.author.username  }}</span>
+                <span class="tourday hot">Questions: {{ poll.questions.count() }}</span>
+            </div>
+            <figcaption>
+                <h3 class="entry-title" style="word-wrap: break-word;">
+                    <a href="{{ url_for('polls.take_poll', poll_id=poll.id) }}">{{ poll.title|truncate(63, True) }}</a>
+                </h3>
+                <span class="description">{{ poll.description }}</span>
+                </span>
+            </figcaption>
+            <div class="tourbtn">
+                <a href="#" class="btn btn-sm">
+                    <i class="fa fa-arrow-right fa-fw"></i><span>Read more</span>
                 </a>
             </div>
-        {% else %}
-            <a href="{{ url_for('auth.logout') }}">
-                <button class="btn custom_btn" type="button">Log Out </button>
-            </a>
-    <div style="color: white;">
-    <p>{{ current_user }}</p>
-        {% endif %}
-        </div>
+        </figure>
     </div>
-
+    {% endfor %}
 </div>
-
-</div>
-    <div class="d-flex flex-wrap justify-content-between">
-        {% for poll in pages.items %}
-                    <div class="tourcard">
-                        <figure>
-                            <div class="tourpic">
-                                <img width="320" height="180" src="{{ url_for('get_file', filename=poll.image_name) }}">
-                                <span class="tourcat">{{ poll.author.username  }}</span>
-                                <span class="tourday hot">Questions: {{ poll.questions.count() }}</span>
-                            </div>
-                            <figcaption>
-                                <h3 class="entry-title" style="word-wrap: break-word;">
-                                    <a href="{{ url_for('polls.take_poll', poll_id=poll.id) }}">{{ poll.title|truncate(63, True) }}</a></h3>
-                                <span class="description">{{ poll.description }}</span>
-                      </span>
-                            </figcaption>
-                            <div class="tourbtn">
-                                <a href="#" class="btn btn-sm">
-                                    <i class="fa fa-arrow-right fa-fw"></i><span>Read more</span>
-                                </a>
-                            </div>
-                        </figure>
-                    </div>
-        {% endfor %}
-    </div>
 <nav aria-label="Page navigation">
-  <ul class="pagination">
-      {% if pages.has_prev %}
-    <li class="page-item">
-      <a class="page-link" href="./?page={{ pages.prev_num }}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-      {% endif %}
-      {% if pages.has_next %}
-    <li class="page-item">
-      <a class="page-link" href="./?page={{ pages.next_num }}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-      {% endif %}
-  </ul>
+    {% if not pages.items %}
+    <h1 style="color:white;" align="center">No Poll like that</h1>
+    <div align="center">
+        <img src="https://publicdomainvectors.org/photos/feels.png" height="500" width="500">
+    </div>
+    {% endif %}
+    <ul class="pagination">
+        {% if pages.has_prev %}
+        <li class="page-item">
+
+            <a class="page-link"
+               href="./?{% if request.args.get('q', '') %}q={{ request.args.get('q', '') }}&{% endif %}page={{ pages.prev_num }}"
+               aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        {% if pages.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+               href="./?{% if request.args.get('q', '') %}q={{ request.args.get('q', '') }}&{% endif %}page={{ pages.next_num }}"
+               aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
 </nav>
 </body>
 </html>

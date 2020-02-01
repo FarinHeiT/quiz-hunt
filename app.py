@@ -40,7 +40,7 @@ login_manager.login_view = 'auth.login'
 def suggest():
     form = SuggestForm()
     if form.validate_on_submit():
-        message = form.text.data
+        message = escape(form.text.data)[:237]
         topic = form.topic.data
         class_message = Suggestion(message=message, author_id=current_user.id, topic=topic)
         db.session.add(class_message)
@@ -62,6 +62,7 @@ def load_user(user_id):
 # add admin pages here
 from models import *
 
+
 class AdminView(ModelView):
     def is_accessible(self):
         return current_user.has_role('admin')
@@ -81,6 +82,7 @@ class PollAdminView(ModelView):
 
     column_searchable_list = ['title', 'id']
     column_filters = ('title', 'created_date', 'author_id', 'description', 'id')
+
 
 class MsgAdminView(ModelView):
     def is_accessible(self):
@@ -166,6 +168,8 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     db.session.add(message)
     db.session.commit()
     json['message'] = str(escape(json['message']))
+    json['admin'] = '#000'
+    print(json)
     socketio.emit('my response', json, callback=messageRecived)
 
 
@@ -180,6 +184,7 @@ def index():
         page = 1
     if q:
         polls = Poll.query.filter(Poll.title.contains(q) | Poll.description.contains(q))
+
     else:
         polls = Poll.query.order_by(Poll.created_date.desc())
 
