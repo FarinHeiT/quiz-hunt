@@ -30,6 +30,9 @@ def validate_creation(data):
 
 
 def validate_taking(data, sample):
+    """ Checks the data for poll completion """
+
+
     # Check count of question
     if len(data) != len(sample):
         return False

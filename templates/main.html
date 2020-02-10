@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
           crossorigin="anonymous">
+
 </head>
 <body>
 <div class="custom-navbar justify-content-around">
@@ -85,7 +86,7 @@
             </div>
             <figcaption>
                 <h3 class="entry-title" style="word-wrap: break-word;">
-                    <a href="{{ url_for('polls.take_poll', poll_id=poll.id) }}">{{ poll.title|truncate(63, True) }}</a>
+                    <a href="{{ url_for('polls.take_poll', poll_id=poll.id) }}" style="text-decoration: none;">{{ poll.title|truncate(63, True) }}</a>
                 </h3>
                 <span class="description">{{ poll.description }}</span>
                 </span>
