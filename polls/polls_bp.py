@@ -58,6 +58,15 @@ def take_poll(poll_id):
 
 @polls.route('/view/<int:poll_id>')
 def view_poll(poll_id):
+
+    completed_poll = db.session.query(CompletedPoll) \
+        .filter(CompletedPoll.poll_id == poll_id,
+                CompletedPoll.author_id == current_user.id).first()
+
+    # If this user haven't completed this poll
+    if not completed_poll:
+        return abort(403)
+
     poll = Poll.query.get(poll_id)
 
     return render_template('view_poll.html', data=poll.aggregate_results())
