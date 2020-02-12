@@ -4,7 +4,18 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/BoiseDigital/pen/Cbxst?q=statistics&order=popularity&depth=everything&show_forks=false" />
+<script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
+<script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script>
+<script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
+<meta charset='UTF-8'>
+<meta name="robots" content="noindex">
+<link rel="shortcut icon" type="image/x-icon"
+      href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico"/>
+<link rel="mask-icon" type=""
+      href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg"
+      color="#111"/>
+<link rel="canonical"
+      href="https://codepen.io/BoiseDigital/pen/Cbxst?q=statistics&order=popularity&depth=everything&show_forks=false"/>
 
 <style>
     background-color:#f5f5f5;
@@ -190,68 +201,69 @@
   -apple-transition:all 0.3s ease-in-out;
   transition:all 0.3s ease-in-out;
 
+
 </style>
 {% endblock %}
 
 {% block body %}
 <h1 align="center">{% if not current_user.username == 'ilya8306' %}
     hello admin {{ current_user.username }}
-{% endif %}
+    {% endif %}
     {% if current_user.username == 'ilya8306' %}
     welcome sir
     {% endif %}
 </h1>
 </br>
 <div class="statContainer">
-  
-<a class="nounderline" href="/user/" title="Users">
-<div class="statBubbleContainer">
-<div class="statBubble websitesLaunched">
-  <div class="statNum">
-  {{ users }}
-  </div>
-</div>
-  <h3>Users</h3>
-  <div class="statRedirect"><span data-title="Users →">Users →</span> </div>
-</div>
-</a>
+
+    <a class="nounderline" href="/user/" title="Users">
+        <div class="statBubbleContainer">
+            <div class="statBubble websitesLaunched">
+                <div class="statNum">
+                    {{ users }}
+                </div>
+            </div>
+            <h3>Users</h3>
+            <div class="statRedirect"><span data-title="Users →">Users →</span></div>
+        </div>
+    </a>
 
 
-<a class="nounderline" href="/poll/" title="Polls">
-<div class="statBubbleContainer">
-<div class="statBubble teamSize">
-  <div class="statNum">
-  {{ polls }}
-  </div>
-</div>
-  <h3>Polls</h3>
-  <div class="statRedirect"><span data-title="Polls →">Polls →</span> </div>
-</div>
-</a>
-  
-  <a class="nounderline" href="/msghistory/" title="Messages">
-<div class="statBubbleContainer">
-<div class="statBubble topSEORank">
-  <div class="statNum">
-{{ msghistory }}
-  </div>
-</div>
-  <h3>Messages</h3>
-  <div class="statRedirect"><span data-title="Messages →">Messages →</span> </div>
-</div>
-</a>
-  
-  <a class="nounderline" target="_blank" href="/suggestion/" title="Suggestions">
-<div class="statBubbleContainer">
-<div class="statBubble facebookLikes">
-  <div class="statNum">
-  {{ suggest }}
-  </div>
-</div>
-  <h3>Suggestions</h3>
-  <div class="statRedirect"><span data-title="Suggestions →">Suggestions →</span> </div>
-</div>
-</a>
+    <a class="nounderline" href="/poll/" title="Polls">
+        <div class="statBubbleContainer">
+            <div class="statBubble teamSize">
+                <div class="statNum">
+                    {{ polls }}
+                </div>
+            </div>
+            <h3>Polls</h3>
+            <div class="statRedirect"><span data-title="Polls →">Polls →</span></div>
+        </div>
+    </a>
+
+    <a class="nounderline" href="/msghistory/" title="Messages">
+        <div class="statBubbleContainer">
+            <div class="statBubble topSEORank">
+                <div class="statNum">
+                    {{ msghistory }}
+                </div>
+            </div>
+            <h3>Messages</h3>
+            <div class="statRedirect"><span data-title="Messages →">Messages →</span></div>
+        </div>
+    </a>
+
+    <a class="nounderline" target="_blank" href="/suggestion/" title="Suggestions">
+        <div class="statBubbleContainer">
+            <div class="statBubble facebookLikes">
+                <div class="statNum">
+                    {{ suggest }}
+                </div>
+            </div>
+            <h3>Suggestions</h3>
+            <div class="statRedirect"><span data-title="Suggestions →">Suggestions →</span></div>
+        </div>
+    </a>
 
 
 </div>

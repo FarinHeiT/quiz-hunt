@@ -38,22 +38,23 @@ Suggestions
   background-color: #f2f2f2;
   padding: 20px;
 }
+
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="containerr">
-  <form method="POST" action="{{ url_for('suggest') }}">
-      {{ form.csrf_token }}
+    <form method="POST" action="{{ url_for('suggest') }}">
+        {{ form.csrf_token }}
 
-    <label for="topic">topic</label>
-      {{ form.topic(id="subject", required="required")}}
-      <div>
-        {{ form.text(id="message", rows="9", cols="25", required="required", placeholder="Message")}}
-        {{ form.button(type="submit", id="btnContactUs")}}
-      </div>
+        <label for="topic">topic</label>
+        {{ form.topic(id="subject", required="required")}}
+        <div>
+            {{ form.text(id="message", rows="9", cols="25", required="required", placeholder="Message")}}
+            {{ form.button(type="submit", id="btnContactUs")}}
+        </div>
 
-  </form>
+    </form>
 </div>
 {% endblock %}
 

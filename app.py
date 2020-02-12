@@ -131,11 +131,11 @@ class HomeAdminView(AdminIndexView):
                            completedpolls=CompletedPoll.query.count())
 
 
-admin = Admin(app, 'Flasapp', url='/', index_view=HomeAdminView(name="home"))
-admin.add_view(AdminView(Poll, db.session))
-admin.add_view(AdminView(Suggestion, db.session))
-admin.add_view(AdminView(User, db.session))
-admin.add_view(AdminView(MsgHistory, db.session))
+admin = Admin(app, 'Quiz-Hunt', url='/', index_view=HomeAdminView(name="home"))
+admin.add_view(PollAdminView(Poll, db.session))
+admin.add_view(SuggestionsAdminView(Suggestion, db.session))
+admin.add_view(UserAdminView(User, db.session))
+admin.add_view(MsgAdminView(MsgHistory, db.session))
 admin.add_view(AdminView(CompletedPoll, db.session))
 #admin.add_view(rediscli.RedisCli(Redis()))
 

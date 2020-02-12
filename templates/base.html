@@ -35,7 +35,7 @@
 
     <div>
         <a href="{{ url_for('about_us') }}">
-        <button class="btn custom_btn" type="button">About</button>
+            <button class="btn custom_btn" type="button">About</button>
         </a>
     </div>
     {% if current_user.is_authenticated %}
@@ -43,30 +43,30 @@
         <button class="btn custom_btn" type="button">Create</button>
     </a>
     <a href="{{ url_for('chat') }}">
-                <button class="btn custom_btn" type="button">Chat</button>
-            </a>
+        <button class="btn custom_btn" type="button">Chat</button>
+    </a>
     {% endif %}
-        {% if not current_user.is_authenticated %}
-            <a href="{{ url_for('auth.login') }}">
-                <button class="btn custom_btn" type="button">Login</button>
-            </a>
-            <div>
-                <a href="{{ url_for('auth.register') }}">
-                    <button class="btn custom_btn" type="button">Register</button>
-                </a>
-            </div>
-        {% else %}
-            <a href="{{ url_for('auth.logout') }}">
-                <button class="btn custom_btn" type="button">Log Out</button>
-            </a>
+    {% if not current_user.is_authenticated %}
+    <a href="{{ url_for('auth.login') }}">
+        <button class="btn custom_btn" type="button">Login</button>
+    </a>
+    <div>
+        <a href="{{ url_for('auth.register') }}">
+            <button class="btn custom_btn" type="button">Register</button>
+        </a>
+    </div>
+    {% else %}
+    <a href="{{ url_for('auth.logout') }}">
+        <button class="btn custom_btn" type="button">Log Out</button>
+    </a>
     {% block button %}
 
     {% endblock %}
-     <div style="color: white;">
-    <p>{{ current_user }}</p>
-        </div>
-        {% endif %}
+    <div style="color: white;">
+        <p>{{ current_user }}</p>
     </div>
+    {% endif %}
+</div>
 
 </div>
 {% block body %}
